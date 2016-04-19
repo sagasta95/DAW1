@@ -61,7 +61,7 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
         c = true;
         vidas = 2;
         puntos = 0;
-        velocidad = 1;
+        velocidad = 2;
 
         jpPanel = new JPanel();
              
@@ -98,8 +98,8 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
         jlbCorazon1.setBounds(1, 1, imagenCorazon.getIconWidth(), imagenCorazon.getIconHeight());
         jlbCorazon2.setBounds(imagenCorazon.getIconWidth() + 2, 1, imagenCorazon.getIconWidth(), imagenCorazon.getIconHeight());
         jlbCorazon3.setBounds(2 *imagenCorazon.getIconWidth() + 2, 1, imagenCorazon.getIconWidth(), imagenCorazon.getIconHeight());
-
         
+
         setSize(d);
         setResizable(false);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
