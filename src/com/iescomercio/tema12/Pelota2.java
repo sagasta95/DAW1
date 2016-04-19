@@ -2,26 +2,18 @@ package com.iescomercio.tema12;
 
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.*;
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.PrintWriter;
-import java.io.RandomAccessFile;
-import java.io.Serializable;
 import static java.lang.Thread.sleep;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -33,9 +25,10 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
     private JPanel jpPanel, jpMarcador, jpTop;
     private JLabel jlbPelota, jlbBarra, jlbFin, jlbPuntos, jlbCorazon1, jlbCorazon2, jlbCorazon3, jlbFondo, jlbGameOver, jlbTexto, jlbFondo2, jlbTop, jlbTop2;
     private JButton jbtnEnviar, jbtnNewGame;
-    private URL urlPelota, urlBarra, urlFin, urlCorazon, urlFondo, urlFondo2;
+    private URL urlPelota, urlBarra, urlFin, urlCorazon, urlFondo, urlFondo2, urlIcon;
     private Dimension d;
     private ImageIcon imagenPelota, imagenBarra, imagenFin, imagenCorazon, imagenFondo, imagenFondo2;
+    private Image imagenIcono;
     private JTextField txt1;
     private ArrayList <Jugador> coleccion;
     private File fichero;
@@ -51,12 +44,14 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
         urlCorazon = getClass().getResource("/imagenes/1up.png");
         urlFondo = getClass().getResource("/imagenes/fondo.png");
         urlFondo2 = getClass().getResource("/imagenes/fondo2.png");
+        urlIcon = getClass().getResource("/imagenes/icon.png");
         imagenFondo = new ImageIcon(urlFondo);
         imagenBarra = new ImageIcon(urlBarra);
         imagenPelota = new ImageIcon(urlPelota);
         imagenFin = new ImageIcon(urlFin);
         imagenCorazon = new ImageIcon(urlCorazon);
         imagenFondo2 = new ImageIcon(urlFondo2);
+        imagenIcono = new ImageIcon(urlIcon).getImage();
         d = new Dimension(1090, 700);
         c = true;
         vidas = 2;
@@ -102,6 +97,8 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
 
         setSize(d);
         setResizable(false);
+        setIconImage(imagenIcono);
+        setTitle("Angry Birds Arcade");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
@@ -281,11 +278,11 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                     if(fichero.exists()){
                         try {
                             fi = new ObjectInputStream(new FileInputStream(fichero));
-                            ArrayList al = (ArrayList)fi.readObject();
-                            al.add(j);
+                            coleccion = (ArrayList)fi.readObject();
+                            coleccion.add(j);
                             fichero.delete();
                             fo = new ObjectOutputStream(new FileOutputStream(fichero));
-                            fo.writeObject(al);
+                            fo.writeObject(coleccion);
                         } catch (FileNotFoundException ex) {
                             Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
                         } catch (IOException ex) {
@@ -305,6 +302,41 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                             Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
                         }
                     }
+                    ObjectInputStream f = null;
+                    try {
+                        jpTop.removeAll();
+                        f = new ObjectInputStream(new FileInputStream(fichero));
+                        ArrayList aux = (ArrayList)f.readObject();
+                        f.close();
+                        Collections.sort(aux, new ComparaJugador());
+                        Iterator it = aux.iterator();
+                        int i = 0;
+                        int c = 1;
+                        while(it.hasNext()){
+                            Jugador j1 = (Jugador)it.next();
+                            jlbTop =  new JLabel(c + ". " + j1.getNombre());
+                            jlbTop2 = new JLabel("" + j1.getPuntos());
+                            jpTop.add(jlbTop);
+                            jpTop.add(jlbTop2);
+                            jlbTop.setBounds(10, 2 + i, 100, 20);
+                            jlbTop2.setBounds(240, 2 + i, 100, 20);
+                            i = i + 22;
+                            c++;
+                        }
+                    } catch (FileNotFoundException ex) {
+                        Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (IOException ex) {
+                        Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+                    } catch (ClassNotFoundException ex) {
+                        Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+                    } finally {
+                        try {
+                            f.close();
+                        } catch (IOException ex) {
+                            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
+                    
                     jpMarcador.remove(jlbTexto);
                     jpMarcador.remove(jbtnEnviar);
                     jpMarcador.remove(txt1);
