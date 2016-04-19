@@ -140,7 +140,7 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                             jpPanel.remove(jlbCorazon2);
                             jlbPelota.setBounds(1, 1, imagenPelota.getIconWidth(), imagenPelota.getIconHeight());
                             break;
-                        case 0:                           
+                        case 0:              
                             jpPanel.remove(jlbCorazon1);
 
                             jpPanel.remove(jlbPelota);
@@ -166,6 +166,8 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                             if(fichero.exists()){
                                 ObjectInputStream f = new ObjectInputStream(new FileInputStream(fichero));
                                 ArrayList aux = (ArrayList)f.readObject();
+                                f.close();
+                                Collections.sort(aux, new ComparaJugador());
                                 Iterator it = aux.iterator();
                                 int i = 0;
                                 int c = 1;
@@ -180,7 +182,6 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                                     i = i + 22;
                                     c++;
                                 }
-                                f.close();
                             }
 
                             
@@ -295,9 +296,9 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                     }
                     else{
                         try {
-                            fo = new ObjectOutputStream(new FileOutputStream(fichero));
-                            coleccion = new ArrayList <Jugador> ();
+                            coleccion = new ArrayList();
                             coleccion.add(j);
+                            fo = new ObjectOutputStream(new FileOutputStream(fichero));
                             fo.writeObject(coleccion);
                             fo.close();
                         } catch (IOException ex) {
