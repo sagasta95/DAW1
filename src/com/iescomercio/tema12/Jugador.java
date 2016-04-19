@@ -12,7 +12,7 @@ import java.util.Objects;
  *
  * @author VESPERTINO
  */
-public class Jugador implements  Serializable{
+public class Jugador implements  Serializable {
     
     private String nombre;
     private long puntos;
@@ -36,4 +36,5 @@ public class Jugador implements  Serializable{
         return nombre + " " + puntos;
     }
       
+    
 }
