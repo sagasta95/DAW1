@@ -103,11 +103,121 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
         setLocationRelativeTo(null);
         setVisible(true);
     }
+    
+    private void gameOver(){
+        jlbFin = new JLabel();
+        jlbGameOver = new JLabel(imagenFin);
+        jpMarcador = new JPanel();
+        jlbFondo2 = new JLabel(imagenFondo2);
+        txt1 = new JTextField();
+        jlbTexto = new JLabel("Introduce tu nombre:");
+        jbtnEnviar = new JButton("Enviar");
+        jpTop = new JPanel(null);
+        jbtnNewGame = new JButton("Nueva Partida");
 
-    public static void main(String[] args) {
-        Pelota2 a = new  Pelota2();
-        Thread t = new Thread(a);
-        t.start();
+        jpPanel.add(jlbFin);
+        jlbFin.add(jlbGameOver);
+        jlbFin.add(jpMarcador); 
+        jpMarcador.add(jlbFondo2);  
+        jpMarcador.add(jlbTexto);
+        jpMarcador.add(txt1);
+        jpMarcador.add(jbtnEnviar);
+        jpMarcador.add(jpTop);
+        jpMarcador.add(jbtnNewGame);
+
+        jlbFin.setBounds(0, 0, d.width, d.height);
+        jlbGameOver.setBounds(d.width / 2 - imagenFin.getIconWidth() / 2, d.height / 2 - imagenFin.getIconHeight() / 2, imagenFin.getIconWidth(), imagenFin.getIconHeight());
+        jpMarcador.setBounds(800, 0, 290, 700);
+        jlbFondo2.setBounds(0, 0, 290, 700);
+        jpMarcador.setComponentZOrder(jlbFondo2, 5);
+        jpMarcador.setComponentZOrder(jpTop, 0);
+        jlbTexto.setBounds(20, 25, 125, 50);
+        txt1.setBounds(162, 38, 100, 25);
+        jbtnEnviar.setBounds(jpMarcador.getSize().width / 2 - 50, 85, 100, 25);
+        jpTop.setBounds(0, 400, jpMarcador.getSize().width, 222);
+        jpTop.setBackground(new Color(226, 196, 168));
+        jbtnNewGame.setBounds(jpMarcador.getSize().width / 2 - 100, 660, 200, 25);
+
+        jbtnEnviar.addActionListener(this);
+        jbtnNewGame.addActionListener(this);
+        jpPanel.remove(jlbPelota);
+        jpPanel.remove(jlbBarra);
+        this.setComponentZOrder(jlbFin, 0);
+        mostrarTop();
+        c = false;
+        repaint();
+    }
+    
+    private void mostrarTop(){
+        if(fichero.exists()){
+            ObjectInputStream f = null;
+            try {
+                f = new ObjectInputStream(new FileInputStream(fichero));
+                ArrayList aux = (ArrayList)f.readObject();
+                f.close();
+                Collections.sort(aux, new ComparaJugador());
+                Iterator it = aux.iterator();
+                int i = 0;
+                int c = 1;
+                while(it.hasNext()){
+                    Jugador j = (Jugador)it.next();
+                    jlbTop =  new JLabel(c + ". " + j.getNombre());
+                    jlbTop2 = new JLabel("" + j.getPuntos());
+                    jpTop.add(jlbTop);
+                    jpTop.add(jlbTop2);
+                    jlbTop.setBounds(10, 2 + i, 100, 20);
+                    jlbTop2.setBounds(240, 2 + i, 100, 20);
+                    i = i + 22;
+                    c++;
+                }   
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ClassNotFoundException ex) {
+                Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    f.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+    }
+    
+    private void crearTop(){
+        Jugador j = new Jugador(txt1.getText(), puntos);
+        ObjectOutputStream f = null;
+        try {
+            coleccion = new ArrayList();
+            coleccion.add(j);
+            f = new ObjectOutputStream(new FileOutputStream(fichero));
+            f.writeObject(coleccion);
+            f.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    private void reemplazarTop(){
+        Jugador j = new Jugador(txt1.getText(), puntos);
+        ObjectInputStream fi = null;
+        ObjectOutputStream fo = null;
+        try {
+            fi = new ObjectInputStream(new FileInputStream(fichero));
+            coleccion = (ArrayList)fi.readObject();
+            coleccion.add(j);
+            fichero.delete();
+            fo = new ObjectOutputStream(new FileOutputStream(fichero));
+            fo.writeObject(coleccion);
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
@@ -115,7 +225,6 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
         int auxX = -1;
         int auxY = -1;
         while(c){
-            try {
                 if(jlbPelota.getLocation().x <= 0)
                     auxX = +1;
                 if(jlbPelota.getLocation().x >= d.getSize().width - (jlbPelota.getSize().width))
@@ -139,102 +248,18 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                             break;
                         case 0:              
                             jpPanel.remove(jlbCorazon1);
-
-                            jpPanel.remove(jlbPelota);
-                            jpPanel.remove(jlbBarra);
-                            
-                            jlbFin = new JLabel();
-                            jlbGameOver = new JLabel(imagenFin);
-                            jpMarcador = new JPanel();
-                            jlbFondo2 = new JLabel(imagenFondo2);
-                            
-                            jpPanel.add(jlbFin);
-                            jlbFin.setBounds(0, 0, d.width, d.height);
-                            
-                            txt1 = new JTextField();
-                            jlbTexto = new JLabel("Introduce tu nombre:");
-                            jbtnEnviar = new JButton("Enviar");
-                            
-                            
-                            jpTop = new JPanel(null);
-                            
-
-                           
-                            if(fichero.exists()){
-                                ObjectInputStream f = new ObjectInputStream(new FileInputStream(fichero));
-                                ArrayList aux = (ArrayList)f.readObject();
-                                f.close();
-                                Collections.sort(aux, new ComparaJugador());
-                                Iterator it = aux.iterator();
-                                int i = 0;
-                                int c = 1;
-                                while(it.hasNext()){
-                                    Jugador j = (Jugador)it.next();
-                                    jlbTop =  new JLabel(c + ". " + j.getNombre());
-                                    jlbTop2 = new JLabel("" + j.getPuntos());
-                                    jpTop.add(jlbTop);
-                                    jpTop.add(jlbTop2);
-                                    jlbTop.setBounds(10, 2 + i, 100, 20);
-                                    jlbTop2.setBounds(240, 2 + i, 100, 20);
-                                    i = i + 22;
-                                    c++;
-                                }
-                            }
-
-                            
-                            
-                            jbtnNewGame = new JButton("Nueva Partida");
-                            
-                                                             
-                            jlbFin.add(jlbGameOver);
-                            jlbFin.add(jpMarcador); 
-                            
-                            jlbGameOver.setBounds(d.width / 2 - imagenFin.getIconWidth() / 2, d.height / 2 - imagenFin.getIconHeight() / 2, imagenFin.getIconWidth(), imagenFin.getIconHeight());
-                            jpMarcador.setBounds(800, 0, 290, 700);
-                            
-                            jpMarcador.add(jlbFondo2);  
-                            
-                            
-                            jpMarcador.add(jlbTexto);
-                            jpMarcador.add(txt1);
-                            jpMarcador.add(jbtnEnviar);
-                            jpMarcador.add(jpTop);
-                            jpMarcador.add(jbtnNewGame);
-                            
-                            jbtnEnviar.addActionListener(this);
-                            jbtnNewGame.addActionListener(this);
-                            
-                            jlbFondo2.setBounds(0, 0, 290, 700);
-                            jpMarcador.setComponentZOrder(jlbFondo2, 5);
-                            jpMarcador.setComponentZOrder(jpTop, 0);
-                            jlbTexto.setBounds(20, 25, 125, 50);
-                            txt1.setBounds(162, 38, 100, 25);
-                            jbtnEnviar.setBounds(jpMarcador.getSize().width / 2 - 50, 85, 100, 25);
-                            jpTop.setBounds(0, 400, jpMarcador.getSize().width, 222);
-                            jpTop.setBackground(new Color(226, 196, 168));
-                            jbtnNewGame.setBounds(jpMarcador.getSize().width / 2 - 100, 660, 200, 25);
-                            
-                            
-                            this.setComponentZOrder(jlbFin, 0);
-  
-                            c = false;
-                            repaint();
+                            gameOver();
                             break;
                     }
-                }
-                    
-                jlbPelota.setLocation((jlbPelota.getLocation().x + auxX), jlbPelota.getLocation().y + auxY);
+                }       
+            jlbPelota.setLocation((jlbPelota.getLocation().x + auxX), jlbPelota.getLocation().y + auxY);
+            try {
                 sleep(velocidad);
-                puntos = puntos + 1;
-                jlbPuntos.setText("Puntos: " + puntos);
             } catch (InterruptedException ex) {
                 Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (IOException ex) {
-                Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
-            } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
             }
-
+            puntos = puntos + 1;
+            jlbPuntos.setText("Puntos: " + puntos);
         }
     }
 
@@ -256,7 +281,6 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                 if(jlbBarra.getLocation().x < (jpPanel.getSize().width - jlbBarra.getSize().width))
                     jlbBarra.setLocation((jlbBarra.getLocation().x + 15), jlbBarra.getLocation().y);
             }
-
     }
 
     @Override
@@ -267,84 +291,33 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
     @Override
     public void actionPerformed(ActionEvent e) {
 
-        ObjectInputStream fi = null;
-        ObjectOutputStream fo = null;
-
             JButton bot = (JButton) e.getSource();
-
             switch (bot.getText()) {
                 case "Enviar":            
-                    Jugador j = new Jugador(txt1.getText(), puntos);
                     if(fichero.exists()){
-                        try {
-                            fi = new ObjectInputStream(new FileInputStream(fichero));
-                            coleccion = (ArrayList)fi.readObject();
-                            coleccion.add(j);
-                            fichero.delete();
-                            fo = new ObjectOutputStream(new FileOutputStream(fichero));
-                            fo.writeObject(coleccion);
-                        } catch (FileNotFoundException ex) {
-                            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (IOException ex) {
-                            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
-                        } catch (ClassNotFoundException ex) {
-                            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        reemplazarTop();
                     }
                     else{
-                        try {
-                            coleccion = new ArrayList();
-                            coleccion.add(j);
-                            fo = new ObjectOutputStream(new FileOutputStream(fichero));
-                            fo.writeObject(coleccion);
-                            fo.close();
-                        } catch (IOException ex) {
-                            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
-                        }
+                        crearTop();
                     }
-                    ObjectInputStream f = null;
-                    try {
-                        jpTop.removeAll();
-                        f = new ObjectInputStream(new FileInputStream(fichero));
-                        ArrayList aux = (ArrayList)f.readObject();
-                        f.close();
-                        Collections.sort(aux, new ComparaJugador());
-                        Iterator it = aux.iterator();
-                        int i = 0;
-                        int c = 1;
-                        while(it.hasNext()){
-                            Jugador j1 = (Jugador)it.next();
-                            jlbTop =  new JLabel(c + ". " + j1.getNombre());
-                            jlbTop2 = new JLabel("" + j1.getPuntos());
-                            jpTop.add(jlbTop);
-                            jpTop.add(jlbTop2);
-                            jlbTop.setBounds(10, 2 + i, 100, 20);
-                            jlbTop2.setBounds(240, 2 + i, 100, 20);
-                            i = i + 22;
-                            c++;
-                        }
-                    } catch (FileNotFoundException ex) {
-                        Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (IOException ex) {
-                        Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
-                    } catch (ClassNotFoundException ex) {
-                        Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
-                    } finally {
-                        try {
-                            f.close();
-                        } catch (IOException ex) {
-                            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
-                        }
-                    }
-                    
+                    mostrarTop();
                     jpMarcador.remove(jlbTexto);
                     jpMarcador.remove(jbtnEnviar);
                     jpMarcador.remove(txt1);
                     repaint();
                     break;
                 case "Nueva Partida":
-
+                    Pelota2 a = new  Pelota2();
+                    Thread t = new Thread(a);
+                    t.start();
+                    dispose();
                     break;
             }
+    }
+    
+    public static void main(String[] args) {
+        Pelota2 a = new  Pelota2();
+        Thread t = new Thread(a);
+        t.start();
     }
 }
