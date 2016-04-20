@@ -20,23 +20,23 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.*;
 
-public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionListener{
+public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, ActionListener{
 
-    private JPanel jpPanel, jpMarcador, jpTop;
-    private JLabel jlbPelota, jlbBarra, jlbFin, jlbPuntos, jlbCorazon1, jlbCorazon2, jlbCorazon3, jlbFondo, jlbGameOver, jlbTexto, jlbFondo2, jlbTop, jlbTop2;
-    private JButton jbtnEnviar, jbtnNewGame;
-    private URL urlPelota, urlBarra, urlFin, urlCorazon, urlFondo, urlFondo2, urlIcon;
+    private JPanel jpPanel, jpMarcador, jpTop, jpPause;
+    private JLabel jlbPelota, jlbBarra, jlbFin, jlbPuntos, jlbCorazon1, jlbCorazon2, jlbCorazon3, jlbFondo, jlbGameOver, jlbTexto, jlbFondo2, jlbTop, jlbTop2, jlbPause;
+    private JButton jbtnEnviar, jbtnNewGame, jbtnReanudar, jbtnReiniciar, jbtnTop, jbtnCerrar;
+    private URL urlPelota, urlBarra, urlFin, urlCorazon, urlFondo, urlFondo2, urlIcon, urlFondo3;
     private Dimension d;
-    private ImageIcon imagenPelota, imagenBarra, imagenFin, imagenCorazon, imagenFondo, imagenFondo2;
+    private ImageIcon imagenPelota, imagenBarra, imagenFin, imagenCorazon, imagenFondo, imagenFondo2, imagenFono3;
     private Image imagenIcono;
     private JTextField txt1;
     private ArrayList <Jugador> coleccion;
     private File fichero;
     private int puntos, vidas;
-    private boolean c;
+    private boolean c, pause;
     private int velocidad;
 
-    public Pelota2() {
+    public AngryBirdsArcade() {
         fichero = new File("E:/Users/VESPERTINO/Documents/NetBeansProjects/data/top.obj");
         urlPelota = getClass().getResource("/imagenes/cerdo.png");
         urlBarra = getClass().getResource("/imagenes/barra.png");
@@ -57,13 +57,12 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
         vidas = 2;
         puntos = 0;
         velocidad = 2;
+        pause = false;
 
         jpPanel = new JPanel();
-             
         jlbPuntos = new JLabel("Puntos: " + puntos);
         jlbBarra = new JLabel(imagenBarra);
         jlbPelota = new JLabel(imagenPelota);
-        jlbPuntos.setForeground(Color.BLACK);
         jlbCorazon1 = new JLabel(imagenCorazon);
         jlbCorazon2 = new JLabel(imagenCorazon);
         jlbCorazon3 = new JLabel(imagenCorazon);
@@ -93,6 +92,7 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
         jlbCorazon1.setBounds(1, 1, imagenCorazon.getIconWidth(), imagenCorazon.getIconHeight());
         jlbCorazon2.setBounds(imagenCorazon.getIconWidth() + 2, 1, imagenCorazon.getIconWidth(), imagenCorazon.getIconHeight());
         jlbCorazon3.setBounds(2 *imagenCorazon.getIconWidth() + 2, 1, imagenCorazon.getIconWidth(), imagenCorazon.getIconHeight());
+        jlbPuntos.setForeground(Color.BLACK);
         
 
         setSize(d);
@@ -102,6 +102,15 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setVisible(true);
+    }
+    
+    private void pause(){   
+        if(pause == false){
+            pause = true;
+        }
+        else{
+            pause = false;
+        } 
     }
     
     private void gameOver(){
@@ -171,16 +180,16 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                     c++;
                 }   
             } catch (FileNotFoundException ex) {
-                Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AngryBirdsArcade.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
-                Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AngryBirdsArcade.class.getName()).log(Level.SEVERE, null, ex);
             } catch (ClassNotFoundException ex) {
-                Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AngryBirdsArcade.class.getName()).log(Level.SEVERE, null, ex);
             } finally {
                 try {
                     f.close();
                 } catch (IOException ex) {
-                    Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+                    Logger.getLogger(AngryBirdsArcade.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
@@ -196,7 +205,7 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
             f.writeObject(coleccion);
             f.close();
         } catch (IOException ex) {
-            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AngryBirdsArcade.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -212,11 +221,11 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
             fo = new ObjectOutputStream(new FileOutputStream(fichero));
             fo.writeObject(coleccion);
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AngryBirdsArcade.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
-            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AngryBirdsArcade.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(AngryBirdsArcade.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -251,15 +260,18 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                             gameOver();
                             break;
                     }
-                }       
-            jlbPelota.setLocation((jlbPelota.getLocation().x + auxX), jlbPelota.getLocation().y + auxY);
+                }
+            if(pause == false)
+                jlbPelota.setLocation((jlbPelota.getLocation().x + auxX), jlbPelota.getLocation().y + auxY);
             try {
                 sleep(velocidad);
             } catch (InterruptedException ex) {
-                Logger.getLogger(Pelota2.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(AngryBirdsArcade.class.getName()).log(Level.SEVERE, null, ex);
             }
-            puntos = puntos + 1;
-            jlbPuntos.setText("Puntos: " + puntos);
+            if(pause == false){
+                puntos = puntos + 1;
+                jlbPuntos.setText("Puntos: " + puntos);
+            }
         }
     }
 
@@ -273,14 +285,16 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
         int key = e.getKeyCode();
         if (c){
             if (key == KeyEvent.VK_LEFT)
-                if(jlbBarra.getLocation().x > 0)
-                    jlbBarra.setLocation((jlbBarra.getLocation().x - 15), jlbBarra.getLocation().y);
-                
-            
-            if (key == KeyEvent.VK_RIGHT) 
-                if(jlbBarra.getLocation().x < (jpPanel.getSize().width - jlbBarra.getSize().width))
-                    jlbBarra.setLocation((jlbBarra.getLocation().x + 15), jlbBarra.getLocation().y);
-            }
+                if(pause == false)
+                    if(jlbBarra.getLocation().x > 0)
+                        jlbBarra.setLocation((jlbBarra.getLocation().x - 15), jlbBarra.getLocation().y);
+            if (key == KeyEvent.VK_RIGHT)
+                if(pause == false)
+                    if(jlbBarra.getLocation().x < (jpPanel.getSize().width - jlbBarra.getSize().width))
+                        jlbBarra.setLocation((jlbBarra.getLocation().x + 15), jlbBarra.getLocation().y);
+            if(key == KeyEvent.VK_P)
+                pause();
+        }
     }
 
     @Override
@@ -307,7 +321,7 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
                     repaint();
                     break;
                 case "Nueva Partida":
-                    Pelota2 a = new  Pelota2();
+                    AngryBirdsArcade a = new  AngryBirdsArcade();
                     Thread t = new Thread(a);
                     t.start();
                     dispose();
@@ -316,7 +330,7 @@ public class Pelota2 extends JFrame implements Runnable, KeyListener, ActionList
     }
     
     public static void main(String[] args) {
-        Pelota2 a = new  Pelota2();
+        AngryBirdsArcade a = new  AngryBirdsArcade();
         Thread t = new Thread(a);
         t.start();
     }
