@@ -1,5 +1,6 @@
 package com.iescomercio.tema12;
 
+import com.sun.imageio.plugins.jpeg.JPEG;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -37,7 +38,7 @@ public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, A
     private int velocidad;
 
     public AngryBirdsArcade() {
-        fichero = new File("E:/Users/VESPERTINO/Documents/NetBeansProjects/data/top.obj");
+        fichero = new File("C:/Users/Sagastagoitia/Documents/NetBeansProjects/data/top.obj");
         urlPelota = getClass().getResource("/imagenes/cerdo.png");
         urlBarra = getClass().getResource("/imagenes/barra.png");
         urlFin = getClass().getResource("/imagenes/game-over.png");
@@ -107,9 +108,22 @@ public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, A
     private void pause(){   
         if(pause == false){
             pause = true;
+            
+            jlbPause = new JLabel();
+            jbtnReanudar = new JButton();
+            
+            jpPanel.add(jlbPause);
+            jlbPause.add(jbtnReanudar);
+            
+            
+
+            jlbPause.setBounds(0,0,1090,700);
+            jbtnReanudar.setBounds(350,350, 100, 25);
+            jpPanel.setComponentZOrder(jlbPause, 0);
         }
         else{
             pause = false;
+            jlbPause.setVisible(pause);
         } 
     }
     
