@@ -24,11 +24,11 @@ import javax.swing.*;
 public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, ActionListener{
 
     private JPanel jpPanel, jpMarcador, jpTop, jpPause;
-    private JLabel jlbPelota, jlbBarra, jlbFin, jlbPuntos, jlbCorazon1, jlbCorazon2, jlbCorazon3, jlbFondo, jlbGameOver, jlbTexto, jlbFondo2, jlbTop, jlbTop2, jlbPause;
+    private JLabel jlbPelota, jlbBarra, jlbFin, jlbPuntos, jlbCorazon1, jlbCorazon2, jlbCorazon3, jlbFondo, jlbGameOver, jlbTexto, jlbFondo2, jlbTop, jlbTop2, jlbPause, jlbLogo;
     private JButton jbtnEnviar, jbtnNewGame, jbtnReanudar, jbtnReiniciar, jbtnTop, jbtnCerrar;
-    private URL urlPelota, urlBarra, urlFin, urlCorazon, urlFondo, urlFondo2, urlIcon, urlFondo3;
+    private URL urlPelota, urlBarra, urlFin, urlCorazon, urlFondo, urlFondo2, urlIcon, urlPause;
     private Dimension d;
-    private ImageIcon imagenPelota, imagenBarra, imagenFin, imagenCorazon, imagenFondo, imagenFondo2, imagenFono3;
+    private ImageIcon imagenPelota, imagenBarra, imagenFin, imagenCorazon, imagenFondo, imagenFondo2, imagenPause;
     private Image imagenIcono;
     private JTextField txt1;
     private ArrayList <Jugador> coleccion;
@@ -38,7 +38,7 @@ public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, A
     private int velocidad;
 
     public AngryBirdsArcade() {
-        fichero = new File("C:/Users/Sagastagoitia/Documents/NetBeansProjects/data/top.obj");
+        fichero = new File("marcador/top.obj");
         urlPelota = getClass().getResource("/imagenes/cerdo.png");
         urlBarra = getClass().getResource("/imagenes/barra.png");
         urlFin = getClass().getResource("/imagenes/game-over.png");
@@ -57,9 +57,8 @@ public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, A
         c = true;
         vidas = 2;
         puntos = 0;
-        velocidad = 2;
+        velocidad = 1;
         pause = false;
-
         jpPanel = new JPanel();
         jlbPuntos = new JLabel("Puntos: " + puntos);
         jlbBarra = new JLabel(imagenBarra);
@@ -110,15 +109,32 @@ public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, A
             pause = true;
             
             jlbPause = new JLabel();
-            jbtnReanudar = new JButton();
+            jbtnReanudar = new JButton("Reanudar");
+            jbtnReiniciar = new JButton("Reiniciar");
+            jbtnTop = new JButton("Top 10");
+            jbtnCerrar = new JButton("Cerrar");
+            urlPause = getClass().getResource("/imagenes/logo.png");
+            imagenPause = new ImageIcon(urlPause);
+            jlbLogo = new JLabel(imagenPause);
             
             jpPanel.add(jlbPause);
             jlbPause.add(jbtnReanudar);
+            jlbPause.add(jbtnReiniciar);
+            jlbPause.add(jbtnTop);
+            jlbPause.add(jbtnCerrar);
+            jlbPause.add(jlbLogo);
             
-            
+            jbtnReanudar.addActionListener(this);
+            jbtnReiniciar.addActionListener(this);
+            jbtnTop.addActionListener(this);
+            jbtnCerrar.addActionListener(this);
 
             jlbPause.setBounds(0,0,1090,700);
-            jbtnReanudar.setBounds(350,350, 100, 25);
+            jbtnReanudar.setBounds(350, 350, 100, 25);
+            jbtnReiniciar.setBounds(500, 350, 100,25);
+            jbtnTop.setBounds(750, 350, 100, 25);
+            jbtnCerrar.setBounds(900,350,100,25);
+            jlbLogo.setBounds(d.width / 2 - imagenPause.getIconWidth() / 2, 200, imagenPause.getIconWidth(), imagenPause.getIconHeight());
             jpPanel.setComponentZOrder(jlbPause, 0);
         }
         else{
@@ -175,6 +191,7 @@ public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, A
         if(fichero.exists()){
             ObjectInputStream f = null;
             try {
+                jpTop.removeAll();
                 f = new ObjectInputStream(new FileInputStream(fichero));
                 ArrayList aux = (ArrayList)f.readObject();
                 f.close();
@@ -312,7 +329,7 @@ public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, A
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
+    public void keyReleased(KeyEvent e) {  
         
     }
 
@@ -334,11 +351,17 @@ public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, A
                     jpMarcador.remove(txt1);
                     repaint();
                     break;
-                case "Nueva Partida":
+                case "Nueva Partida": case "Reiniciar":
                     AngryBirdsArcade a = new  AngryBirdsArcade();
                     Thread t = new Thread(a);
                     t.start();
                     dispose();
+                    break;
+                case "Reanudar":
+                    pause();
+                    break;
+                case "Cerrar":
+                    System.exit(0);
                     break;
             }
     }
