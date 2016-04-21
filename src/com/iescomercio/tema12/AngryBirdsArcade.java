@@ -130,11 +130,11 @@ public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, A
             jbtnCerrar.addActionListener(this);
 
             jlbPause.setBounds(0,0,1090,700);
-            jbtnReanudar.setBounds(350, 350, 100, 25);
-            jbtnReiniciar.setBounds(500, 350, 100,25);
-            jbtnTop.setBounds(750, 350, 100, 25);
-            jbtnCerrar.setBounds(900,350,100,25);
-            jlbLogo.setBounds(d.width / 2 - imagenPause.getIconWidth() / 2, 200, imagenPause.getIconWidth(), imagenPause.getIconHeight());
+            jbtnReanudar.setBounds(300, 350, 100, 25);
+            jbtnReiniciar.setBounds(425, 350, 100,25);
+            jbtnTop.setBounds(550, 350, 100, 25);
+            jbtnCerrar.setBounds(675,350,100,25);
+            jlbLogo.setBounds(d.width / 2 - imagenPause.getIconWidth() / 2, 50, imagenPause.getIconWidth(), imagenPause.getIconHeight());
             jpPanel.setComponentZOrder(jlbPause, 0);
         }
         else{
