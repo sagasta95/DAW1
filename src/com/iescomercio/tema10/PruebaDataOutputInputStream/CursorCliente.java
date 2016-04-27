@@ -36,23 +36,39 @@ public class CursorCliente {
         return coleccion;
     }
     
-    public void cargarFichero(){
+    public void cargarDatos(){
         if(fichero.exists()){
-///*            DataInputStream fi = new DataInputStream(new FileInputStream(fichero));
-//            fi.rea*/
+            DataInputStream fi = null;
+            try {
+                fi = new DataInputStream(new FileInputStream(fichero));
+                int aux = fi.read();
+                while(aux != -1){
+                    añadir(new Cliente(fi.readLong(), fi.readUTF(), fi.readUTF(), fi.readUTF(), fi.readInt()));
+                }
+            } catch (FileNotFoundException ex) {
+                Logger.getLogger(CursorCliente.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(CursorCliente.class.getName()).log(Level.SEVERE, null, ex);
+            } finally {
+                try {
+                    fi.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(CursorCliente.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
         }
     }
     
-    public void reemplazarFichero(){
+    public void guardarDatos(){
             DataOutputStream fo = null;
             try {
                 fo = new DataOutputStream(new FileOutputStream(fichero));
                 for(int c=0; c < coleccion.size(); c++){
-                    fo.writeChars(coleccion.get(c).getDni());
-                    fo.writeChars(coleccion.get(c).getNombre());
-                    fo.writeChars(coleccion.get(c).getApellido1());
-                    fo.writeChars(coleccion.get(c).getAplledio2());
-                    fo.writeChars(coleccion.get(c).getEdad());
+                    fo.writeLong(coleccion.get(c).getDni());
+                    fo.writeUTF(coleccion.get(c).getNombre());
+                    fo.writeUTF(coleccion.get(c).getApellido1());
+                    fo.writeUTF(coleccion.get(c).getAplledio2());
+                    fo.writeInt(coleccion.get(c).getEdad());
                 }
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(CursorCliente.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,5 +89,9 @@ public class CursorCliente {
     
     public void borrar(Cliente c){
         coleccion.remove(c);
+    }
+    
+    public void consulta(){
+        
     }
 }

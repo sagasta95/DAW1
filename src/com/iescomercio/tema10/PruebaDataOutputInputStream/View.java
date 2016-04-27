@@ -7,6 +7,7 @@ package com.iescomercio.tema10.PruebaDataOutputInputStream;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,6 +17,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
 import javax.swing.JTextField;
 
 /**
@@ -28,6 +31,8 @@ public class View extends JFrame implements ActionListener, WindowListener{
     private JButton jbtnAñadir, jbtnBorrar, jbtnModificar, jbtnConsulta, jbtnAñadirNew, jbtnDelete;
     private JLabel jlbAñadirDni, jlbAñadirNombre, jlbAñadirApellido1, jlbAñadirApellido2, jlbAñadirEdad, jlbBorrarDni;
     private JTextField jtfñadirDni, jtfAñadirNombre, jtfAñadirApellido1, jtfAñadirApellido2, jtfAñadirEdad, jtfBorrarDni;
+    private JScrollPane jspConsulta;
+    private JTable tabla;
     private CursorCliente cc;
     private Dimension d;
     
@@ -57,7 +62,7 @@ public class View extends JFrame implements ActionListener, WindowListener{
         jbtnModificar.addActionListener(this);
         jbtnConsulta.addActionListener(this);
                                  
-        cc.cargarFichero();
+        cc.cargarDatos();
         
         crearVistaAñadir();
         crearVistaBorrar();
@@ -126,6 +131,18 @@ public class View extends JFrame implements ActionListener, WindowListener{
         jpBorrar.setVisible(false);
     }
     
+    private void crearVistaVer(){
+        jpConsulta = new JPanel(new FlowLayout());
+        jpPrincipal.add(jpConsulta, BorderLayout.CENTER);
+        
+        String[] titColumna = {"DNI", "Nombre", "Apellido1", "Apellido2", "Edad"};
+        tabla = new JTable();
+        jspConsulta = new JScrollPane();
+        
+        
+        jpConsulta.setVisible(false);
+    }
+    
     @Override
     public void actionPerformed(ActionEvent e) {
         JButton bot = (JButton) e.getSource();
@@ -137,7 +154,7 @@ public class View extends JFrame implements ActionListener, WindowListener{
 
                 break;
             case "+":
-                Cliente c1 = new Cliente(jtfñadirDni.getText(), jtfAñadirNombre.getText(), jtfAñadirApellido1.getText(), jtfAñadirApellido2.getText(), jtfAñadirEdad.getText());
+                Cliente c1 = new Cliente(Long.parseLong(jtfñadirDni.getText()), jtfAñadirNombre.getText(), jtfAñadirApellido1.getText(), jtfAñadirApellido2.getText(), Integer.parseInt(jtfAñadirEdad.getText()));
                 cc.añadir(c1);
                 jtfñadirDni.setText("");
                 jtfAñadirNombre.setText("");
@@ -151,7 +168,7 @@ public class View extends JFrame implements ActionListener, WindowListener{
                 jpBorrar.setVisible(true);
                 break;
             case "Delete":
-                Cliente c2 = new Cliente(jtfBorrarDni.getText(), "", "", "", "");
+                Cliente c2 = new Cliente(Long.parseLong(jtfBorrarDni.getText()), null, null, null, 0);
                 cc.borrar(c2);
                 jtfBorrarDni.setText("");
                 break;
@@ -169,7 +186,7 @@ public class View extends JFrame implements ActionListener, WindowListener{
 
     @Override
     public void windowClosing(WindowEvent e) {
-        cc.reemplazarFichero();
+        cc.guardarDatos();
     }
 
     @Override

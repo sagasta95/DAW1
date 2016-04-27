@@ -13,22 +13,16 @@ import java.util.Objects;
  */
 public class Cliente {
     
-    private String dni, nombre, apellido1, aplledio2, edad;
+    private String nombre, apellido1, aplledio2;
+    private long dni;
+    private int edad;
     
-    public Cliente(String dni, String nombre, String apellido1, String apellido2, String edad){
+    public Cliente(long dni, String nombre, String apellido1, String apellido2, int edad){
         this.dni = dni;
         this.nombre = nombre;
         this.apellido1 = apellido1;
         this.aplledio2 = apellido2;
         this.edad = edad;
-    }
-
-    public String getDni() {
-        return dni;
-    }
-
-    public void setDni(String dni) {
-        this.dni = dni;
     }
 
     public String getNombre() {
@@ -55,13 +49,22 @@ public class Cliente {
         this.aplledio2 = aplledio2;
     }
 
-    public String getEdad() {
+    public long getDni() {
+        return dni;
+    }
+
+    public void setDni(long dni) {
+        this.dni = dni;
+    }
+
+    public int getEdad() {
         return edad;
     }
 
-    public void setEdad(String edad) {
+    public void setEdad(int edad) {
         this.edad = edad;
     }
+
 
     @Override
     public boolean equals(Object obj) {
