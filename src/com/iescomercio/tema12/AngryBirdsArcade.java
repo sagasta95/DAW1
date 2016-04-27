@@ -1,6 +1,5 @@
 package com.iescomercio.tema12;
 
-import com.sun.imageio.plugins.jpeg.JPEG;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Image;
@@ -142,7 +141,7 @@ public class AngryBirdsArcade extends JFrame implements Runnable, KeyListener, A
             jlbPause.setVisible(pause);
         } 
     }
-    
+     
     private void gameOver(){
         jlbFin = new JLabel();
         jlbGameOver = new JLabel(imagenFin);
