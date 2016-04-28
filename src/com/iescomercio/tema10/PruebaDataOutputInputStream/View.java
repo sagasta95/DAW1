@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
 
 /**
  *
@@ -27,12 +28,13 @@ import javax.swing.JTextField;
  */
 public class View extends JFrame implements ActionListener, WindowListener{
 
-    private JPanel jpPrincipal, jpHerramientas, jpAñadir, jpBorrar, jpModificar, jpConsulta;
-    private JButton jbtnAñadir, jbtnBorrar, jbtnModificar, jbtnConsulta, jbtnAñadirNew, jbtnDelete;
-    private JLabel jlbAñadirDni, jlbAñadirNombre, jlbAñadirApellido1, jlbAñadirApellido2, jlbAñadirEdad, jlbBorrarDni;
-    private JTextField jtfñadirDni, jtfAñadirNombre, jtfAñadirApellido1, jtfAñadirApellido2, jtfAñadirEdad, jtfBorrarDni;
+    private JPanel jpPrincipal, jpHerramientas, jpAñadir, jpBorrar, jpModificar, jpConsulta, jpModificar2;
+    private JButton jbtnAñadir, jbtnBorrar, jbtnModificar, jbtnConsulta, jbtnAñadirNew, jbtnDelete, jbtnEdit, jbtnOk;
+    private JLabel jlbAñadirDni, jlbAñadirNombre, jlbAñadirApellido1, jlbAñadirApellido2, jlbAñadirEdad, jlbBorrarDni, jlbModificar;
+    private JTextField jtfñadirDni, jtfAñadirNombre, jtfAñadirApellido1, jtfAñadirApellido2, jtfAñadirEdad, jtfBorrarDni, jtfModificar;
     private JScrollPane jspConsulta;
     private JTable tabla;
+    private DefaultTableModel modelo;
     private CursorCliente cc;
     private Dimension d;
     
@@ -66,6 +68,9 @@ public class View extends JFrame implements ActionListener, WindowListener{
         
         crearVistaAñadir();
         crearVistaBorrar();
+        crearVistaModificar();
+        crearVistaModificar2();
+        crearVistaVer();
         
         
         setSize(d);
@@ -121,6 +126,7 @@ public class View extends JFrame implements ActionListener, WindowListener{
         jlbBorrarDni = new JLabel("DNI:");
         jtfBorrarDni = new JTextField();
         jbtnDelete = new JButton("Delete");
+        jbtnDelete.addActionListener(this);
         jpPrincipal.add(jpBorrar, BorderLayout.CENTER);
         jpBorrar.add(jlbBorrarDni);
         jpBorrar.add(jtfBorrarDni);
@@ -131,15 +137,78 @@ public class View extends JFrame implements ActionListener, WindowListener{
         jpBorrar.setVisible(false);
     }
     
+    private void crearVistaModificar(){
+        jpModificar = new JPanel(null);
+        jlbModificar = new JLabel("DNI:");
+        jtfModificar = new JTextField();
+        jbtnEdit = new JButton("Edit");
+        jbtnEdit.addActionListener(this);
+        jpPrincipal.add(jpModificar, BorderLayout.CENTER);
+        jpModificar.add(jlbModificar);
+        jpModificar.add(jtfModificar);
+        jpModificar.add(jbtnEdit);
+        jlbModificar.setBounds(170, 30, 100, 25);
+        jtfModificar.setBounds(220, 30, 100, 25);
+        jbtnEdit.setBounds(200, 90, 100, 25);
+        jpModificar.setVisible(false);
+    }
+    
+    private void crearVistaModificar2(){
+        jpModificar2 = new JPanel(null);
+        jlbAñadirDni = new JLabel("DNI:");
+        jlbAñadirNombre = new JLabel("Nombre:");
+        jlbAñadirApellido1 = new JLabel("Primer Apellido:");
+        jlbAñadirApellido2 = new JLabel("Segundo Apellido:");
+        jlbAñadirEdad = new JLabel("Edad:");
+        jtfñadirDni = new JTextField();
+        jtfAñadirNombre = new JTextField();
+        jtfAñadirApellido1 = new JTextField();
+        jtfAñadirApellido2 = new JTextField();
+        jtfAñadirEdad = new JTextField();
+        jbtnOk = new JButton("OK");
+        jbtnOk.addActionListener(this);
+        jpPrincipal.add(jpModificar2, BorderLayout.CENTER);
+        jpModificar2.add(jlbAñadirDni);
+        jpModificar2.add(jtfñadirDni);
+        jpModificar2.add(jlbAñadirNombre);
+        jpModificar2.add(jtfAñadirNombre);
+        jpModificar2.add(jlbAñadirApellido1);
+        jpModificar2.add(jtfAñadirApellido1);
+        jpModificar2.add(jlbAñadirApellido2);
+        jpModificar2.add(jtfAñadirApellido2);
+        jpModificar2.add(jlbAñadirEdad);
+        jpModificar2.add(jtfAñadirEdad);
+        jpModificar2.add(jbtnOk);
+        jlbAñadirDni.setBounds(10, 10, 100, 25);
+        jtfñadirDni.setBounds(115, 10, 100, 25);
+        jlbAñadirNombre.setBounds(10, 50, 100, 25);
+        jtfAñadirNombre.setBounds(115, 50, 100, 25);
+        jlbAñadirApellido1.setBounds(240, 10, 100, 25);
+        jtfAñadirApellido1.setBounds(380, 10, 100, 25);
+        jlbAñadirApellido2.setBounds(240, 50, 100, 25);
+        jtfAñadirApellido2.setBounds(380, 50, 100, 25);
+        jlbAñadirEdad.setBounds(10, 90, 100, 25);
+        jtfAñadirEdad.setBounds(115, 90, 100, 25);
+        jbtnOk.setBounds(428, 90, 50, 25);
+        jpModificar2.setVisible(false);
+        
+    }
+    
     private void crearVistaVer(){
-        jpConsulta = new JPanel(new FlowLayout());
+        jpConsulta = new JPanel(new GridLayout(1, 1));
         jpPrincipal.add(jpConsulta, BorderLayout.CENTER);
         
         String[] titColumna = {"DNI", "Nombre", "Apellido1", "Apellido2", "Edad"};
-        tabla = new JTable();
-        jspConsulta = new JScrollPane();
+        modelo = new DefaultTableModel(titColumna, 0);
         
+        for (int c = 0; c < cc.getColeccion().size(); c++) {
+            String[] datColumna = {"" + cc.getColeccion().get(c).getDni(), cc.getColeccion().get(c).getNombre(), cc.getColeccion().get(c).getApellido1(), cc.getColeccion().get(c).getAplledio2(), "" + cc.getColeccion().get(c).getEdad()}; 
+            modelo.addRow(datColumna);
+        }
         
+        tabla = new JTable(modelo);
+        jspConsulta = new JScrollPane(tabla);
+        jpConsulta.add(jspConsulta);
         jpConsulta.setVisible(false);
     }
     
@@ -148,10 +217,36 @@ public class View extends JFrame implements ActionListener, WindowListener{
         JButton bot = (JButton) e.getSource();
         switch(bot.getText()){
             case "Nuevo":
-                    jpBorrar.removeAll();
-                    crearVistaAñadir();
-                    jpAñadir.setVisible(true);
-
+                jpModificar.removeAll();
+                jpModificar2.removeAll();
+                jpConsulta.removeAll();
+                jpBorrar.removeAll();
+                crearVistaAñadir();
+                jpAñadir.setVisible(true);
+                break;
+            case "Borrar":
+                jpConsulta.removeAll();
+                jpModificar.removeAll();
+                jpModificar2.removeAll();
+                jpAñadir.removeAll();
+                crearVistaBorrar();
+                jpBorrar.setVisible(true);
+                break;
+            case "Modificar":
+                jpAñadir.removeAll();
+                jpBorrar.removeAll();
+                jpModificar2.removeAll();
+                jpConsulta.removeAll();
+                crearVistaModificar();
+                jpModificar.setVisible(true);
+                break;
+            case "Ver":
+                jpAñadir.removeAll();
+                jpBorrar.removeAll();
+                jpModificar.removeAll();
+                jpModificar2.removeAll();
+                crearVistaVer();
+                jpConsulta.setVisible(true);
                 break;
             case "+":
                 Cliente c1 = new Cliente(Long.parseLong(jtfñadirDni.getText()), jtfAñadirNombre.getText(), jtfAñadirApellido1.getText(), jtfAñadirApellido2.getText(), Integer.parseInt(jtfAñadirEdad.getText()));
@@ -161,11 +256,6 @@ public class View extends JFrame implements ActionListener, WindowListener{
                 jtfAñadirApellido1.setText("");
                 jtfAñadirApellido2.setText("");
                 jtfAñadirEdad.setText("");
-                break;
-            case "Borrar":
-                jpAñadir.removeAll();
-                crearVistaBorrar();
-                jpBorrar.setVisible(true);
                 break;
             case "Delete":
                 Cliente c2 = new Cliente(Long.parseLong(jtfBorrarDni.getText()), null, null, null, 0);

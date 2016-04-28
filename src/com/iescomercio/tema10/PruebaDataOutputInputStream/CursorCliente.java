@@ -7,6 +7,7 @@ package com.iescomercio.tema10.PruebaDataOutputInputStream;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
+import java.io.EOFException;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,7 +30,7 @@ public class CursorCliente {
     
     public CursorCliente(){
         coleccion = new ArrayList();
-        fichero = new File("E:\\Users\\VESPERTINO\\Documents\\NetBeansProjects\\1ª EVA\\data\\clientes.dat");
+        fichero = new File("E:\\Users\\VESPERTINO\\Documents\\NetBeansProjects\\DAW\\data\\clientes.dat");
     }
 
     public ArrayList<Cliente> getColeccion() {
@@ -41,10 +42,11 @@ public class CursorCliente {
             DataInputStream fi = null;
             try {
                 fi = new DataInputStream(new FileInputStream(fichero));
-                int aux = fi.read();
-                while(aux != -1){
+                while(true){
                     añadir(new Cliente(fi.readLong(), fi.readUTF(), fi.readUTF(), fi.readUTF(), fi.readInt()));
                 }
+            } catch (EOFException ex){
+                
             } catch (FileNotFoundException ex) {
                 Logger.getLogger(CursorCliente.class.getName()).log(Level.SEVERE, null, ex);
             } catch (IOException ex) {
@@ -94,4 +96,9 @@ public class CursorCliente {
     public void consulta(){
         
     }
+    
+    public void modificar(){
+        
+    }
+    
 }

@@ -65,7 +65,6 @@ public class Cliente {
         this.edad = edad;
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (obj == null) {
