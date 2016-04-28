@@ -7,7 +7,6 @@ package com.iescomercio.tema10.PruebaDataOutputInputStream;
 
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -196,16 +195,74 @@ public class View extends JFrame implements ActionListener, WindowListener{
     private void crearVistaVer(){
         jpConsulta = new JPanel(new GridLayout(1, 1));
         jpPrincipal.add(jpConsulta, BorderLayout.CENTER);   
-        String[] titColumna = {"DNI", "Nombre", "Apellido1", "Apellido2", "Edad"};
-        modelo = new DefaultTableModel(titColumna, 0);
-        for (int c = 0; c < cc.getColeccion().size(); c++) {
-            String[] datColumna = {"" + cc.getColeccion().get(c).getDni(), cc.getColeccion().get(c).getNombre(), cc.getColeccion().get(c).getApellido1(), cc.getColeccion().get(c).getAplledio2(), "" + cc.getColeccion().get(c).getEdad()}; 
-            modelo.addRow(datColumna);
-        }
-        tabla = new JTable(modelo);
-        jspConsulta = new JScrollPane(tabla);
+        jspConsulta = new JScrollPane(cc.consulta());
         jpConsulta.add(jspConsulta);
         jpConsulta.setVisible(false);
+    }
+    
+    private void verAñadir(){
+        jpBorrar.setVisible(false);
+        jpConsulta.setVisible(false);
+        jpModificar.setVisible(false);
+        jpModificar2.setVisible(false);
+        crearVistaAñadir();
+        jpAñadir.setVisible(true);
+        jbtnBorrar.setEnabled(true);
+        jbtnAñadir.setEnabled(false);
+        jbtnConsulta.setEnabled(true);
+        jbtnModificar.setEnabled(true);
+    }
+    
+    private void verBorrar(){
+        jpConsulta.setVisible(false);
+        jpModificar.setVisible(false);
+        jpModificar2.setVisible(false);
+        jpAñadir.setVisible(false);
+        crearVistaBorrar();
+        jpBorrar.setVisible(true);
+        jbtnBorrar.setEnabled(false);
+        jbtnAñadir.setEnabled(true);
+        jbtnConsulta.setEnabled(true);
+        jbtnModificar.setEnabled(true);
+    }
+    
+    private void verModificar(){
+        jpBorrar.setVisible(false);
+        jpConsulta.setVisible(false);
+        jpModificar2.setVisible(false);
+        jpAñadir.setVisible(false);
+        crearVistaModificar();
+        jpModificar.setVisible(true);
+        jbtnBorrar.setEnabled(true);
+        jbtnAñadir.setEnabled(true);
+        jbtnConsulta.setEnabled(true);
+        jbtnModificar.setEnabled(false);
+    }
+    
+    private void verVer(){
+        jpBorrar.setVisible(false);
+        jpModificar.setVisible(false);
+        jpModificar2.setVisible(false);
+        jpAñadir.setVisible(false);
+        crearVistaVer();
+        jpConsulta.setVisible(true);
+        jbtnBorrar.setEnabled(true);
+        jbtnAñadir.setEnabled(true);
+        jbtnConsulta.setEnabled(false);
+        jbtnModificar.setEnabled(true);
+    }
+    
+    private void verModificar2(){
+        jpBorrar.setVisible(false);
+        jpConsulta.setVisible(false);
+        jpModificar.setVisible(false);
+        jpAñadir.setVisible(false);
+        crearVistaModificar2();
+        jpModificar2.setVisible(true);
+        jbtnBorrar.setEnabled(false);
+        jbtnAñadir.setEnabled(false);
+        jbtnConsulta.setEnabled(false);
+        jbtnModificar.setEnabled(false);
     }
     
     @Override
@@ -213,44 +270,20 @@ public class View extends JFrame implements ActionListener, WindowListener{
         JButton bot = (JButton) e.getSource();
         switch(bot.getText()){
             case "Nuevo":
-                jpBorrar.setVisible(false);
-                jpConsulta.setVisible(false);
-                jpModificar.setVisible(false);
-                jpModificar2.setVisible(false);
-                crearVistaAñadir();
-                jpAñadir.setVisible(true);
+                verAñadir();
                 break;
             case "Borrar":
-                jpConsulta.setVisible(false);
-                jpModificar.setVisible(false);
-                jpModificar2.setVisible(false);
-                jpAñadir.setVisible(false);
-                crearVistaBorrar();
-                jpBorrar.setVisible(true);
+                verBorrar();
                 break;
             case "Modificar":
-                jpBorrar.setVisible(false);
-                jpConsulta.setVisible(false);
-                jpModificar2.setVisible(false);
-                jpAñadir.setVisible(false);
-                crearVistaModificar();
-                jpModificar.setVisible(true);
+                verModificar();
                 break;
             case "Ver":
-                jpBorrar.setVisible(false);
-                jpModificar.setVisible(false);
-                jpModificar2.setVisible(false);
-                jpAñadir.setVisible(false);
-                crearVistaVer();
-                jpConsulta.setVisible(true);
+                verVer();
                 break;
             case "+":
                 Cliente c1 = new Cliente(Long.parseLong(jtfñadirDni.getText()), jtfAñadirNombre.getText(), jtfAñadirApellido1.getText(), jtfAñadirApellido2.getText(), Integer.parseInt(jtfAñadirEdad.getText()));
-                if(cc.getColeccion().contains(c1)){
-                    JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
-                }
-                else{
-                    cc.añadir(c1);
+                if(cc.añadir(c1)){
                     jtfñadirDni.setText("");
                     jtfAñadirNombre.setText("");
                     jtfAñadirApellido1.setText("");
@@ -258,27 +291,24 @@ public class View extends JFrame implements ActionListener, WindowListener{
                     jtfAñadirEdad.setText("");
                     JOptionPane.showMessageDialog(this, "Cliente creado con exito", "OK", 1);
                 }
+                else{
+                    JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
+                }
                 break;
             case "Delete":
                 Cliente c2 = new Cliente(Long.parseLong(jtfBorrarDni.getText()), "", "", "", 0);
-                if(cc.getColeccion().contains(c2)){
-                    cc.borrar(c2);
+                if (cc.borrar(c2)){
                     jtfBorrarDni.setText("");
                     JOptionPane.showMessageDialog(this, "Cliente borrado con exito", "OK", 1);
                 }
-                else
-                    JOptionPane.showMessageDialog(this, "No existe un cliente con este DNI", "Advertencia", 2);
+                else   
+                    JOptionPane.showMessageDialog(this, "No existe el cliente", "Error", 0);
                 break;
             case "Edit":
                 Cliente c3 = new Cliente(Long.parseLong(jtfModificar.getText()), "", "", "", 0);
                 if(cc.getColeccion().contains(c3)){
                     cc.borrar(c3);
-                    jpBorrar.setVisible(false);
-                    jpConsulta.setVisible(false);
-                    jpModificar.setVisible(false);
-                    jpAñadir.setVisible(false);
-                    crearVistaModificar2();
-                    jpModificar2.setVisible(true);
+                    verModificar2();
                     JOptionPane.showMessageDialog(this, "Introduce los nuevos datos", "OK", 1);
                 }
                 else
@@ -292,12 +322,7 @@ public class View extends JFrame implements ActionListener, WindowListener{
                 else{
                     cc.añadir(c4);
                     JOptionPane.showMessageDialog(this, "Cliente modificado con exito", "OK", 1);
-                    jpAñadir.setVisible(false);
-                    jpBorrar.setVisible(false);
-                    jpModificar2.setVisible(false);
-                    jpConsulta.setVisible(false);
-                    crearVistaModificar();
-                    jpModificar.setVisible(true);
+                    verModificar();
                 }
                 break;
         }
