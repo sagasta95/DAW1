@@ -38,8 +38,6 @@ public class View extends JFrame implements ActionListener, WindowListener{
     private CursorCliente cc;
     private Dimension d;
     
-    
-    
     public View() {
         jpPrincipal = new JPanel(new BorderLayout());
         jpHerramientas = new JPanel(new GridLayout(1, 4));
@@ -291,9 +289,8 @@ public class View extends JFrame implements ActionListener, WindowListener{
                     jtfAñadirEdad.setText("");
                     JOptionPane.showMessageDialog(this, "Cliente creado con exito", "OK", 1);
                 }
-                else{
+                else
                     JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
-                }
                 break;
             case "Delete":
                 Cliente c2 = new Cliente(Long.parseLong(jtfBorrarDni.getText()), "", "", "", 0);
@@ -306,8 +303,7 @@ public class View extends JFrame implements ActionListener, WindowListener{
                 break;
             case "Edit":
                 Cliente c3 = new Cliente(Long.parseLong(jtfModificar.getText()), "", "", "", 0);
-                if(cc.getColeccion().contains(c3)){
-                    cc.borrar(c3);
+                if(cc.borrar(c3)){
                     verModificar2();
                     JOptionPane.showMessageDialog(this, "Introduce los nuevos datos", "OK", 1);
                 }
@@ -316,14 +312,12 @@ public class View extends JFrame implements ActionListener, WindowListener{
                 break;
             case "OK":
                 Cliente c4 = new Cliente(Long.parseLong(jtfñadirDni.getText()), jtfAñadirNombre.getText(), jtfAñadirApellido1.getText(), jtfAñadirApellido2.getText(), Integer.parseInt(jtfAñadirEdad.getText()));
-                if(cc.getColeccion().contains(c4)){
-                    JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
-                }
-                else{
-                    cc.añadir(c4);
+                if(cc.añadir(c4)){ 
                     JOptionPane.showMessageDialog(this, "Cliente modificado con exito", "OK", 1);
                     verModificar();
                 }
+                else
+                    JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
                 break;
         }
     }
