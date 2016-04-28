@@ -30,7 +30,7 @@ public class CursorCliente {
     
     public CursorCliente(){
         coleccion = new ArrayList();
-        fichero = new File("E:\\Users\\VESPERTINO\\Documents\\NetBeansProjects\\DAW\\data\\clientes.dat");
+        fichero = new File("E:\\Users\\VESPERTINO\\Documents\\NetBeansProjects\\data\\clientes.dat");
     }
 
     public ArrayList<Cliente> getColeccion() {

@@ -16,6 +16,7 @@ import java.awt.event.WindowListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -71,7 +72,6 @@ public class View extends JFrame implements ActionListener, WindowListener{
         crearVistaModificar();
         crearVistaModificar2();
         crearVistaVer();
-        
         
         setSize(d);
         setResizable(false);
@@ -189,23 +189,19 @@ public class View extends JFrame implements ActionListener, WindowListener{
         jtfAñadirApellido2.setBounds(380, 50, 100, 25);
         jlbAñadirEdad.setBounds(10, 90, 100, 25);
         jtfAñadirEdad.setBounds(115, 90, 100, 25);
-        jbtnOk.setBounds(428, 90, 50, 25);
+        jbtnOk.setBounds(370, 90, 90, 25);
         jpModificar2.setVisible(false);
-        
     }
     
     private void crearVistaVer(){
         jpConsulta = new JPanel(new GridLayout(1, 1));
-        jpPrincipal.add(jpConsulta, BorderLayout.CENTER);
-        
+        jpPrincipal.add(jpConsulta, BorderLayout.CENTER);   
         String[] titColumna = {"DNI", "Nombre", "Apellido1", "Apellido2", "Edad"};
         modelo = new DefaultTableModel(titColumna, 0);
-        
         for (int c = 0; c < cc.getColeccion().size(); c++) {
             String[] datColumna = {"" + cc.getColeccion().get(c).getDni(), cc.getColeccion().get(c).getNombre(), cc.getColeccion().get(c).getApellido1(), cc.getColeccion().get(c).getAplledio2(), "" + cc.getColeccion().get(c).getEdad()}; 
             modelo.addRow(datColumna);
         }
-        
         tabla = new JTable(modelo);
         jspConsulta = new JScrollPane(tabla);
         jpConsulta.add(jspConsulta);
@@ -217,50 +213,92 @@ public class View extends JFrame implements ActionListener, WindowListener{
         JButton bot = (JButton) e.getSource();
         switch(bot.getText()){
             case "Nuevo":
-                jpModificar.removeAll();
-                jpModificar2.removeAll();
-                jpConsulta.removeAll();
-                jpBorrar.removeAll();
+                jpBorrar.setVisible(false);
+                jpConsulta.setVisible(false);
+                jpModificar.setVisible(false);
+                jpModificar2.setVisible(false);
                 crearVistaAñadir();
                 jpAñadir.setVisible(true);
                 break;
             case "Borrar":
-                jpConsulta.removeAll();
-                jpModificar.removeAll();
-                jpModificar2.removeAll();
-                jpAñadir.removeAll();
+                jpConsulta.setVisible(false);
+                jpModificar.setVisible(false);
+                jpModificar2.setVisible(false);
+                jpAñadir.setVisible(false);
                 crearVistaBorrar();
                 jpBorrar.setVisible(true);
                 break;
             case "Modificar":
-                jpAñadir.removeAll();
-                jpBorrar.removeAll();
-                jpModificar2.removeAll();
-                jpConsulta.removeAll();
+                jpBorrar.setVisible(false);
+                jpConsulta.setVisible(false);
+                jpModificar2.setVisible(false);
+                jpAñadir.setVisible(false);
                 crearVistaModificar();
                 jpModificar.setVisible(true);
                 break;
             case "Ver":
-                jpAñadir.removeAll();
-                jpBorrar.removeAll();
-                jpModificar.removeAll();
-                jpModificar2.removeAll();
+                jpBorrar.setVisible(false);
+                jpModificar.setVisible(false);
+                jpModificar2.setVisible(false);
+                jpAñadir.setVisible(false);
                 crearVistaVer();
                 jpConsulta.setVisible(true);
                 break;
             case "+":
                 Cliente c1 = new Cliente(Long.parseLong(jtfñadirDni.getText()), jtfAñadirNombre.getText(), jtfAñadirApellido1.getText(), jtfAñadirApellido2.getText(), Integer.parseInt(jtfAñadirEdad.getText()));
-                cc.añadir(c1);
-                jtfñadirDni.setText("");
-                jtfAñadirNombre.setText("");
-                jtfAñadirApellido1.setText("");
-                jtfAñadirApellido2.setText("");
-                jtfAñadirEdad.setText("");
+                if(cc.getColeccion().contains(c1)){
+                    JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
+                }
+                else{
+                    cc.añadir(c1);
+                    jtfñadirDni.setText("");
+                    jtfAñadirNombre.setText("");
+                    jtfAñadirApellido1.setText("");
+                    jtfAñadirApellido2.setText("");
+                    jtfAñadirEdad.setText("");
+                    JOptionPane.showMessageDialog(this, "Cliente creado con exito", "OK", 1);
+                }
                 break;
             case "Delete":
-                Cliente c2 = new Cliente(Long.parseLong(jtfBorrarDni.getText()), null, null, null, 0);
-                cc.borrar(c2);
-                jtfBorrarDni.setText("");
+                Cliente c2 = new Cliente(Long.parseLong(jtfBorrarDni.getText()), "", "", "", 0);
+                if(cc.getColeccion().contains(c2)){
+                    cc.borrar(c2);
+                    jtfBorrarDni.setText("");
+                    JOptionPane.showMessageDialog(this, "Cliente borrado con exito", "OK", 1);
+                }
+                else
+                    JOptionPane.showMessageDialog(this, "No existe un cliente con este DNI", "Advertencia", 2);
+                break;
+            case "Edit":
+                Cliente c3 = new Cliente(Long.parseLong(jtfModificar.getText()), "", "", "", 0);
+                if(cc.getColeccion().contains(c3)){
+                    cc.borrar(c3);
+                    jpBorrar.setVisible(false);
+                    jpConsulta.setVisible(false);
+                    jpModificar.setVisible(false);
+                    jpAñadir.setVisible(false);
+                    crearVistaModificar2();
+                    jpModificar2.setVisible(true);
+                    JOptionPane.showMessageDialog(this, "Introduce los nuevos datos", "OK", 1);
+                }
+                else
+                    JOptionPane.showMessageDialog(this, "No existe un cliente con este DNI", "Advertencia", 2);
+                break;
+            case "OK":
+                Cliente c4 = new Cliente(Long.parseLong(jtfñadirDni.getText()), jtfAñadirNombre.getText(), jtfAñadirApellido1.getText(), jtfAñadirApellido2.getText(), Integer.parseInt(jtfAñadirEdad.getText()));
+                if(cc.getColeccion().contains(c4)){
+                    JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
+                }
+                else{
+                    cc.añadir(c4);
+                    JOptionPane.showMessageDialog(this, "Cliente modificado con exito", "OK", 1);
+                    jpAñadir.setVisible(false);
+                    jpBorrar.setVisible(false);
+                    jpModificar2.setVisible(false);
+                    jpConsulta.setVisible(false);
+                    crearVistaModificar();
+                    jpModificar.setVisible(true);
+                }
                 break;
         }
     }
