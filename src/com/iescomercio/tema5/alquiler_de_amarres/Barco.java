@@ -12,12 +12,15 @@ package com.iescomercio.tema5.alquiler_de_amarres;
 public class Barco {
     
     private String matricula;
-    private float m_eslora, año_fabricacion;
+    private int m_eslora, año_fabricacion, cv, n_camarotes;
     
-    public Barco(String matricula, int año_fabricacion, int m_eslora){
+    
+    public Barco(String matricula, int año_fabricacion, int m_eslora, int cv, int n_camarotes){
         this.matricula = matricula;
         this.año_fabricacion = año_fabricacion;
         this.m_eslora = m_eslora;
+        this.cv = cv;
+        this.n_camarotes = n_camarotes;
     }
     
     public float calcularAlquiler(){

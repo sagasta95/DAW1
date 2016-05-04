@@ -33,10 +33,6 @@ public class CursorCliente {
         fichero = new File("E:\\Users\\VESPERTINO\\Documents\\NetBeansProjects\\data\\clientes.dat");
     }
 
-    public ArrayList<Cliente> getColeccion() {
-        return coleccion;
-    }
-
     public void cargarDatos() {
         if (fichero.exists()) {
             DataInputStream fi = null;

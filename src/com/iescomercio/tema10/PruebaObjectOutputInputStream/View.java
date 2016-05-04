@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.iescomercio.tema10.PruebaDataOutputInputStream;
+package com.iescomercio.tema10.PruebaObjectOutputInputStream;
 
+import com.iescomercio.tema10.PruebaDataOutputInputStream.*;
 import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
+import static java.lang.Integer.parseInt;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -21,13 +21,15 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.event.InternalFrameEvent;
+import javax.swing.event.InternalFrameListener;
 import javax.swing.table.DefaultTableModel;
 
 /**
  *
  * @author VESPERTINO
  */
-public class View extends JInternalFrame implements ActionListener, WindowListener{
+public class View extends JInternalFrame implements ActionListener, InternalFrameListener{
 
     private JPanel jpPrincipal, jpHerramientas, jpAñadir, jpBorrar, jpModificar, jpConsulta, jpModificar2;
     private JButton jbtnAñadir, jbtnBorrar, jbtnModificar, jbtnConsulta, jbtnAñadirNew, jbtnDelete, jbtnEdit, jbtnOk;
@@ -35,8 +37,8 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
     private JTextField jtfñadirDni, jtfAñadirNombre, jtfAñadirApellido1, jtfAñadirApellido2, jtfAñadirEdad, jtfBorrarDni, jtfModificar;
     private JScrollPane jspConsulta;
     private JTable tabla;
+    private DAO_ObjectStream dao;
     private DefaultTableModel modelo;
-    private CursorCliente cc;
     private Dimension d;
     
     public View() {
@@ -47,7 +49,8 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
         jbtnConsulta = new JButton("Ver");
         jbtnModificar = new JButton("Modificar");
         d = new Dimension(500, 180);
-        cc  = new CursorCliente();
+        dao = new DAO_ObjectStream();
+
         
         getContentPane().add(jpPrincipal);
         jpPrincipal.add(jpHerramientas, BorderLayout.NORTH);
@@ -57,36 +60,35 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
         jpHerramientas.add(jbtnModificar, BorderLayout.NORTH);
         jpHerramientas.add(jbtnConsulta, BorderLayout.NORTH);
         
-        
+        this.addInternalFrameListener(this);
         jbtnAñadir.addActionListener(this);
         jbtnBorrar.addActionListener(this);
         jbtnModificar.addActionListener(this);
         jbtnConsulta.addActionListener(this);
-                                 
-        cc.cargarDatos();
+                     
+        dao.cargar();
         
         crearVistaAñadir();
         crearVistaBorrar();
         crearVistaModificar();
         crearVistaModificar2();
         crearVistaVer();
+        setClosable(true);
         
         setSize(d);
-        setClosable(true);
         setResizable(false);
         setTitle("Data Input/Output Stream");
-        
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
     
     private void crearVistaAñadir(){
         jpAñadir = new JPanel(null);
-        jlbAñadirDni = new JLabel("DNI:");
-        jlbAñadirNombre = new JLabel("Nombre:");
-        jlbAñadirApellido1 = new JLabel("Primer Apellido:");
-        jlbAñadirApellido2 = new JLabel("Segundo Apellido:");
-        jlbAñadirEdad = new JLabel("Edad:");
+        jlbAñadirDni = new JLabel("Matricula:");
+        jlbAñadirNombre = new JLabel("Año de fabricacion::");
+        jlbAñadirApellido1 = new JLabel("Eslora (m):");
+        jlbAñadirApellido2 = new JLabel("CV:");
+        jlbAñadirEdad = new JLabel("Nº Camarotes:");
         jtfñadirDni = new JTextField();
         jtfAñadirNombre = new JTextField();
         jtfAñadirApellido1 = new JTextField();
@@ -122,7 +124,7 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
     
     private void crearVistaBorrar(){
         jpBorrar = new JPanel(null);
-        jlbBorrarDni = new JLabel("DNI:");
+        jlbBorrarDni = new JLabel("Matricula:");
         jtfBorrarDni = new JTextField();
         jbtnDelete = new JButton("Delete");
         jbtnDelete.addActionListener(this);
@@ -138,7 +140,7 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
     
     private void crearVistaModificar(){
         jpModificar = new JPanel(null);
-        jlbModificar = new JLabel("DNI:");
+        jlbModificar = new JLabel("Matricula:");
         jtfModificar = new JTextField();
         jbtnEdit = new JButton("Edit");
         jbtnEdit.addActionListener(this);
@@ -195,7 +197,7 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
     private void crearVistaVer(){
         jpConsulta = new JPanel(new GridLayout(1, 1));
         jpPrincipal.add(jpConsulta, BorderLayout.CENTER);   
-        jspConsulta = new JScrollPane(cc.consulta());
+        jspConsulta = new JScrollPane(dao.ver());
         jpConsulta.add(jspConsulta);
         jpConsulta.setVisible(false);
     }
@@ -282,8 +284,8 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
                 verVer();
                 break;
             case "+":
-                Cliente c1 = new Cliente(Long.parseLong(jtfñadirDni.getText()), jtfAñadirNombre.getText(), jtfAñadirApellido1.getText(), jtfAñadirApellido2.getText(), Integer.parseInt(jtfAñadirEdad.getText()));
-                if(cc.añadir(c1)){
+                Barco c1 = new Barco(jtfñadirDni.getText(), Integer.parseInt(jtfAñadirNombre.getText()), Integer.parseInt(jtfAñadirApellido1.getText()), Integer.parseInt(jtfAñadirApellido2.getText()), Integer.parseInt(jtfAñadirEdad.getText()));
+                if(dao.añadir(c1)){
                     jtfñadirDni.setText("");
                     jtfAñadirNombre.setText("");
                     jtfAñadirApellido1.setText("");
@@ -295,8 +297,8 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
                     JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
                 break;
             case "Delete":
-                Cliente c2 = new Cliente(Long.parseLong(jtfBorrarDni.getText()), "", "", "", 0);
-                if (cc.borrar(c2)){
+                Barco c2 = new Barco(jtfBorrarDni.getText(), 0, 0, 0, 0);
+                if (dao.borrar(c2)){
                     jtfBorrarDni.setText("");
                     JOptionPane.showMessageDialog(this, "Cliente borrado con exito", "OK", 1);
                 }
@@ -305,7 +307,7 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
                 break;
             case "Edit":
                 Cliente c3 = new Cliente(Long.parseLong(jtfModificar.getText()), "", "", "", 0);
-                if(cc.borrar(c3)){
+                if(true){
                     verModificar2();
                     JOptionPane.showMessageDialog(this, "Introduce los nuevos datos", "OK", 1);
                 }
@@ -314,7 +316,7 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
                 break;
             case "OK":
                 Cliente c4 = new Cliente(Long.parseLong(jtfñadirDni.getText()), jtfAñadirNombre.getText(), jtfAñadirApellido1.getText(), jtfAñadirApellido2.getText(), Integer.parseInt(jtfAñadirEdad.getText()));
-                if(cc.añadir(c4)){ 
+                if(true){ 
                     JOptionPane.showMessageDialog(this, "Cliente modificado con exito", "OK", 1);
                     verModificar();
                 }
@@ -324,43 +326,43 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
         }
     }
     
+    @Override
+    public void internalFrameOpened(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameClosing(InternalFrameEvent e) {
+        this.setVisible(false);
+        dao.guardar();
+    }
+
+    @Override
+    public void internalFrameClosed(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameIconified(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameDeiconified(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameActivated(InternalFrameEvent e) {
+
+    }
+
+    @Override
+    public void internalFrameDeactivated(InternalFrameEvent e) {
+
+    }
+    
     public static void main(String[] args) {
         new View();
     }
-
-    @Override
-    public void windowOpened(WindowEvent e) {
-
-    }
-
-    @Override
-    public void windowClosing(WindowEvent e) {
-        cc.guardarDatos();
-    }
-
-    @Override
-    public void windowClosed(WindowEvent e) {
-        
-    }
-
-    @Override
-    public void windowIconified(WindowEvent e) {
-        
-    }
-
-    @Override
-    public void windowDeiconified(WindowEvent e) {
-        
-    }
-
-    @Override
-    public void windowActivated(WindowEvent e) {
-        
-    }
-
-    @Override
-    public void windowDeactivated(WindowEvent e) {
-        
-    }
-    
 }
