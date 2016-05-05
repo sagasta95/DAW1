@@ -6,13 +6,14 @@
 package com.iescomercio.tema10.PruebaObjectOutputInputStream;
 
 import com.iescomercio.tema5.alquiler_de_amarres.*;
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author VESPERTINO
  */
-public class Barco {
+public class Barco implements Serializable{
 
     public String getMatricula() {
         return matricula;

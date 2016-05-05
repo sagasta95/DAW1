@@ -36,9 +36,7 @@ public class View extends JInternalFrame implements ActionListener, InternalFram
     private JLabel jlbAñadirDni, jlbAñadirNombre, jlbAñadirApellido1, jlbAñadirApellido2, jlbAñadirEdad, jlbBorrarDni, jlbModificar;
     private JTextField jtfñadirDni, jtfAñadirNombre, jtfAñadirApellido1, jtfAñadirApellido2, jtfAñadirEdad, jtfBorrarDni, jtfModificar;
     private JScrollPane jspConsulta;
-    private JTable tabla;
     private DAO_ObjectStream dao;
-    private DefaultTableModel modelo;
     private Dimension d;
     
     public View() {

@@ -60,6 +60,7 @@ public class DAO_ObjectStream implements DAO{
         ObjectOutputStream fo = null;
         try {
             fo = new ObjectOutputStream(new FileOutputStream(fichero));
+            fichero.delete();
             fo.writeObject(coleccion);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DAO_ObjectStream.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,7 +106,7 @@ public class DAO_ObjectStream implements DAO{
         String[] titColumna = {"Matricula", "Fabricacion", "Eslora(m)", "CV", "Nº Camarotes"};
         DefaultTableModel modelo = new DefaultTableModel(titColumna, 0);
         for (int c = 0; c < coleccion.size(); c++) {
-            String[] datColumna = {"" + coleccion.get(c).getMatricula(), "" + coleccion.get(c).getAño_fabricacion(), "" + coleccion.get(c).getM_eslora(), "" + coleccion.get(c).getCv(), "" + coleccion.get(c).getN_camarotes()}; 
+            String[] datColumna = {coleccion.get(c).getMatricula(), "" + coleccion.get(c).getAño_fabricacion(), "" + coleccion.get(c).getM_eslora(), "" + coleccion.get(c).getCv(), "" + coleccion.get(c).getN_camarotes()}; 
             modelo.addRow(datColumna);
         }
         JTable tabla = new JTable(modelo);
