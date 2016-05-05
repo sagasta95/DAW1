@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  */
 public class PruebaConexion {
     
-    Connection con;
-    Statement stm;
-    ResultSet rs;
+    private Connection con;
+    private Statement stm;
+    private ResultSet rs;
     
     public PruebaConexion(){
         try {
@@ -28,14 +28,12 @@ public class PruebaConexion {
             while(rs.next()){
                 System.out.println(rs.getString(4));
             }
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(PruebaConexion.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (SQLException ex) {
+        } catch (ClassNotFoundException | SQLException ex) {
             Logger.getLogger(PruebaConexion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public static void main(String[] args) {
-        new PruebaConexion();
+        PruebaConexion pruebaConexion = new PruebaConexion();
     }
 }
