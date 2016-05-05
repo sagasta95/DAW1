@@ -16,13 +16,15 @@ import java.util.logging.Logger;
 public class PruebaConexion {
     
     Connection con;
+    Statement stm;
+    ResultSet rs;
     
     public PruebaConexion(){
         try {
             Class.forName("com.mysql.jdbc.Driver");
             con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=convertToNull", "root", "");
-            Statement stm = con.createStatement();
-            ResultSet rs = stm.executeQuery("select * from negocios2011.pedidoscabe");
+            stm = con.createStatement();
+            rs = stm.executeQuery("select * from negocios2011.pedidoscabe");
             while(rs.next()){
                 System.out.println(rs.getString(4));
             }
