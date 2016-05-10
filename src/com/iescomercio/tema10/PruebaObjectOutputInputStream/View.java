@@ -282,7 +282,7 @@ public class View extends JInternalFrame implements ActionListener, InternalFram
                 verVer();
                 break;
             case "+":
-                Barco c1 = new Barco(jtfñadirDni.getText(), Integer.parseInt(jtfAñadirNombre.getText()), Integer.parseInt(jtfAñadirApellido1.getText()), Integer.parseInt(jtfAñadirApellido2.getText()), Integer.parseInt(jtfAñadirEdad.getText()));
+                Barcos c1 = new Barcos(jtfñadirDni.getText(), Integer.parseInt(jtfAñadirNombre.getText()), Integer.parseInt(jtfAñadirApellido1.getText()), Integer.parseInt(jtfAñadirApellido2.getText()), Integer.parseInt(jtfAñadirEdad.getText()));
                 if(dao.añadir(c1)){
                     jtfñadirDni.setText("");
                     jtfAñadirNombre.setText("");
@@ -295,7 +295,7 @@ public class View extends JInternalFrame implements ActionListener, InternalFram
                     JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
                 break;
             case "Delete":
-                Barco c2 = new Barco(jtfBorrarDni.getText(), 0, 0, 0, 0);
+                Barcos c2 = new Barcos(jtfBorrarDni.getText(), 0, 0, 0, 0);
                 if (dao.borrar(c2)){
                     jtfBorrarDni.setText("");
                     JOptionPane.showMessageDialog(this, "Cliente borrado con exito", "OK", 1);

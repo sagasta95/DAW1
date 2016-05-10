@@ -24,12 +24,12 @@ import javax.swing.table.DefaultTableModel;
  */
 public class DAO_ObjectStream implements DAO{
 
-    private ArrayList <Barco> coleccion;
+    private ArrayList <Barcos> coleccion;
     private File fichero;
     
     public DAO_ObjectStream() {
         coleccion = new ArrayList();
-        fichero = new File("E:\\Users\\VESPERTINO\\Documents\\NetBeansProjects\\data\\barcos.dat");
+        fichero = new File("E:\\Users\\VESPERTINO\\Documents\\NetBeansProjects\\data\\barcos.obj");
     }
     
     @Override
@@ -51,8 +51,8 @@ public class DAO_ObjectStream implements DAO{
                 }
             }
             return true;
-            }
-            return false;
+        }
+        return false;
     }
 
     @Override
@@ -60,7 +60,6 @@ public class DAO_ObjectStream implements DAO{
         ObjectOutputStream fo = null;
         try {
             fo = new ObjectOutputStream(new FileOutputStream(fichero));
-            fichero.delete();
             fo.writeObject(coleccion);
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DAO_ObjectStream.class.getName()).log(Level.SEVERE, null, ex);
@@ -77,7 +76,7 @@ public class DAO_ObjectStream implements DAO{
     }
 
     @Override
-    public boolean añadir(Barco b) {
+    public boolean añadir(Barcos b) {
         if(coleccion.contains(b))
             return false;
         else{
@@ -87,7 +86,7 @@ public class DAO_ObjectStream implements DAO{
     }
 
     @Override
-    public boolean borrar(Barco b) {
+    public boolean borrar(Barcos b) {
         if (coleccion.contains(b)) {            
             coleccion.remove(b);
             return true;

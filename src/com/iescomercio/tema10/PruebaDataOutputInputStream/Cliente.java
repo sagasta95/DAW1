@@ -5,13 +5,14 @@
  */
 package com.iescomercio.tema10.PruebaDataOutputInputStream;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
  *
  * @author VESPERTINO
  */
-public class Cliente {
+public class Cliente implements Serializable{
     
     private String nombre, apellido1, aplledio2;
     private long dni;

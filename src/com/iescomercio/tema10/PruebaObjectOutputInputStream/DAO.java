@@ -17,9 +17,9 @@ public interface DAO {
     
     public boolean guardar();
     
-    public boolean añadir(Barco b);
+    public boolean añadir(Barcos b);
     
-    public boolean borrar(Barco b);
+    public boolean borrar(Barcos b);
     
     public boolean modificar();
     

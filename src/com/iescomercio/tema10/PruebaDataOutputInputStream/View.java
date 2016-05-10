@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author VESPERTINO
  */
-public class View extends JInternalFrame implements ActionListener, WindowListener{
+public class View extends JFrame implements ActionListener, WindowListener{
 
     private JPanel jpPrincipal, jpHerramientas, jpAñadir, jpBorrar, jpModificar, jpConsulta, jpModificar2;
     private JButton jbtnAñadir, jbtnBorrar, jbtnModificar, jbtnConsulta, jbtnAñadirNew, jbtnDelete, jbtnEdit, jbtnOk;
@@ -72,7 +72,6 @@ public class View extends JInternalFrame implements ActionListener, WindowListen
         crearVistaVer();
         
         setSize(d);
-        setClosable(true);
         setResizable(false);
         setTitle("Data Input/Output Stream");
         

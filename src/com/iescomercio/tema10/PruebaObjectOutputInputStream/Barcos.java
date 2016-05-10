@@ -5,7 +5,6 @@
  */
 package com.iescomercio.tema10.PruebaObjectOutputInputStream;
 
-import com.iescomercio.tema5.alquiler_de_amarres.*;
 import java.io.Serializable;
 import java.util.Objects;
 
@@ -13,7 +12,7 @@ import java.util.Objects;
  *
  * @author VESPERTINO
  */
-public class Barco implements Serializable{
+public class Barcos implements Serializable{
 
     public String getMatricula() {
         return matricula;
@@ -58,7 +57,7 @@ public class Barco implements Serializable{
     private String matricula;
     private int m_eslora, año_fabricacion, cv, n_camarotes;
 
-    public Barco(String matricula, int año_fabricacion, int m_eslora, int cv, int n_camarotes){
+    public Barcos(String matricula, int año_fabricacion, int m_eslora, int cv, int n_camarotes){
         this.matricula = matricula;
         this.año_fabricacion = año_fabricacion;
         this.m_eslora = m_eslora;
@@ -85,7 +84,7 @@ public class Barco implements Serializable{
         if (getClass() != obj.getClass()) {
             return false;
         }
-        final Barco other = (Barco) obj;
+        final Barcos other = (Barcos) obj;
         if (!Objects.equals(this.matricula, other.matricula)) {
             return false;
         }
