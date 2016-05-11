@@ -107,8 +107,12 @@ public class DAO_ObjectStream implements DAO{
     
     @Override
     public boolean modificar2(Barcos b) {
-        coleccion.add(b);
-        return true;
+        if(coleccion.contains(b))
+            return false;
+        else{
+            coleccion.add(b);
+            return true;
+        }
     }
 
     @Override
