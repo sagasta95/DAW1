@@ -99,13 +99,16 @@ public class DAO_BaseDatos implements DAO{
     @Override
     public boolean modificar2(Barcos b){
         try {
-            stm.executeUpdate("insert barcos.barcos values(" + b.getMatricula() + "," + b.getAño_fabricacion() + "," + b.getM_eslora() + "," + b.getCv() + "," + b.getN_camarotes() + ");");
-            return true;
+            if(stm.executeQuery("select * from barcos.barcos where matricula = " + b.getMatricula() + ";").first())
+                return false;
+            else {
+                stm.executeUpdate("insert barcos.barcos values(" + b.getMatricula() + "," + b.getAño_fabricacion() + "," + b.getM_eslora() + "," + b.getCv() + "," + b.getN_camarotes() + ");");
+                return true;
+            }
         } catch (SQLException ex) {
             Logger.getLogger(DAO_BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
             return false;
         }
-        
     }
 
     @Override
