@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.iescomercio.tema10.PruebaObjectOutputInputStream;
+package com.iescomercio.Amarres;
 
 import com.iescomercio.tema10.PruebaDataOutputInputStream.*;
 import java.awt.BorderLayout;
@@ -36,7 +36,7 @@ public class View extends JInternalFrame implements ActionListener, InternalFram
     private JLabel jlbAñadirDni, jlbAñadirNombre, jlbAñadirApellido1, jlbAñadirApellido2, jlbAñadirEdad, jlbBorrarDni, jlbModificar;
     private JTextField jtfñadirDni, jtfAñadirNombre, jtfAñadirApellido1, jtfAñadirApellido2, jtfAñadirEdad, jtfBorrarDni, jtfModificar;
     private JScrollPane jspConsulta;
-    private DAO_ObjectStream dao;
+    private DAO_BaseDatos dao;
     private Dimension d;
     
     public View() {
@@ -47,7 +47,7 @@ public class View extends JInternalFrame implements ActionListener, InternalFram
         jbtnConsulta = new JButton("Ver");
         jbtnModificar = new JButton("Modificar");
         d = new Dimension(500, 180);
-        dao = new DAO_ObjectStream();
+        dao = new DAO_BaseDatos();
 
         
         getContentPane().add(jpPrincipal);
@@ -75,7 +75,7 @@ public class View extends JInternalFrame implements ActionListener, InternalFram
         
         setSize(d);
         setResizable(false);
-        setTitle("Data Input/Output Stream");
+        setTitle("Barcos");
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
     }
@@ -289,37 +289,37 @@ public class View extends JInternalFrame implements ActionListener, InternalFram
                     jtfAñadirApellido1.setText("");
                     jtfAñadirApellido2.setText("");
                     jtfAñadirEdad.setText("");
-                    JOptionPane.showMessageDialog(this, "Cliente creado con exito", "OK", 1);
+                    JOptionPane.showMessageDialog(this, "Barco creado con exito", "OK", 1);
                 }
                 else
-                    JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
+                    JOptionPane.showMessageDialog(this, "Ya existe un barco con esta Matricula", "Advertencia", 2);
                 break;
             case "Delete":
                 Barcos c2 = new Barcos(jtfBorrarDni.getText(), 0, 0, 0, 0);
                 if (dao.borrar(c2)){
                     jtfBorrarDni.setText("");
-                    JOptionPane.showMessageDialog(this, "Cliente borrado con exito", "OK", 1);
+                    JOptionPane.showMessageDialog(this, "Barco borrado con exito", "OK", 1);
                 }
                 else   
-                    JOptionPane.showMessageDialog(this, "No existe el cliente", "Error", 0);
+                    JOptionPane.showMessageDialog(this, "No existe un barco con esta matricula", "Error", 0);
                 break;
             case "Edit":
-                Cliente c3 = new Cliente(Long.parseLong(jtfModificar.getText()), "", "", "", 0);
-                if(true){
+                Barcos c3 = new Barcos(jtfModificar.getText(), 0, 0, 0, 0);
+                if(dao.modificar1(c3)){
                     verModificar2();
                     JOptionPane.showMessageDialog(this, "Introduce los nuevos datos", "OK", 1);
                 }
                 else
-                    JOptionPane.showMessageDialog(this, "No existe un cliente con este DNI", "Advertencia", 2);
+                    JOptionPane.showMessageDialog(this, "El barco no existe", "Error", 0);
                 break;
             case "OK":
-                Cliente c4 = new Cliente(Long.parseLong(jtfñadirDni.getText()), jtfAñadirNombre.getText(), jtfAñadirApellido1.getText(), jtfAñadirApellido2.getText(), Integer.parseInt(jtfAñadirEdad.getText()));
-                if(true){ 
-                    JOptionPane.showMessageDialog(this, "Cliente modificado con exito", "OK", 1);
+                Barcos c4 = new Barcos(jtfñadirDni.getText(), Integer.parseInt(jtfAñadirNombre.getText()), Integer.parseInt(jtfAñadirApellido1.getText()), Integer.parseInt(jtfAñadirApellido2.getText()), Integer.parseInt(jtfAñadirEdad.getText()));
+                if(dao.modificar2(c4)){ 
+                    JOptionPane.showMessageDialog(this, "Barco modificado con exito", "OK", 1);
                     verModificar();
                 }
                 else
-                    JOptionPane.showMessageDialog(this, "Ya existe un cliente con este DNI", "Advertencia", 2);
+                    JOptionPane.showMessageDialog(this, "Ya existe un barco con esta matricula", "Advertencia", 2);
                 break;
         }
     }

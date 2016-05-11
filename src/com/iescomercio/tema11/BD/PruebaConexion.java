@@ -5,6 +5,8 @@
  */
 package com.iescomercio.tema11.BD;
 
+import com.iescomercio.Amarres.Conexion;
+import java.io.File;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,20 +17,17 @@ import java.util.logging.Logger;
  */
 public class PruebaConexion {
     
-    private Connection con;
     private Statement stm;
     private ResultSet rs;
     
     public PruebaConexion(){
         try {
-            Class.forName("com.mysql.jdbc.Driver");
-            con = DriverManager.getConnection("jdbc:mysql://localhost:3306/mysql?zeroDateTimeBehavior=convertToNull", "root", "");
-            stm = con.createStatement();
-            rs = stm.executeQuery("select * from negocios2011.pedidoscabe");
-            while(rs.next()){
-                System.out.println(rs.getString(4));
-            }
-        } catch (ClassNotFoundException | SQLException ex) {
+            stm = Conexion.getConexion().createStatement();
+            stm.executeUpdate("delete from barcos.barcos where matricula = ;");
+//            while(rs.next()){
+//                System.out.println(rs.getInt(4));
+//            }
+        } catch (SQLException ex) {
             Logger.getLogger(PruebaConexion.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

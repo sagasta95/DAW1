@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.iescomercio.tema10.PruebaObjectOutputInputStream;
+package com.iescomercio.Amarres;
 
 import java.io.Serializable;
 import java.util.Objects;
@@ -14,6 +14,17 @@ import java.util.Objects;
  */
 public class Barcos implements Serializable{
 
+    private String matricula;
+    private int m_eslora, año_fabricacion, cv, n_camarotes;
+
+    public Barcos(String matricula, int año_fabricacion, int m_eslora, int cv, int n_camarotes){
+        this.matricula = matricula;
+        this.año_fabricacion = año_fabricacion;
+        this.m_eslora = m_eslora;
+        this.cv = cv;
+        this.n_camarotes = n_camarotes;
+    }
+    
     public String getMatricula() {
         return matricula;
     }
@@ -53,21 +64,6 @@ public class Barcos implements Serializable{
     public void setN_camarotes(int n_camarotes) {
         this.n_camarotes = n_camarotes;
     }
-    
-    private String matricula;
-    private int m_eslora, año_fabricacion, cv, n_camarotes;
-
-    public Barcos(String matricula, int año_fabricacion, int m_eslora, int cv, int n_camarotes){
-        this.matricula = matricula;
-        this.año_fabricacion = año_fabricacion;
-        this.m_eslora = m_eslora;
-        this.cv = cv;
-        this.n_camarotes = n_camarotes;
-    }
-    
-    public float calcularAlquiler(){
-        return (10 * m_eslora);
-    }
 
     @Override
     public int hashCode() {
@@ -90,5 +86,4 @@ public class Barcos implements Serializable{
         }
         return true;
     }
-   
 }

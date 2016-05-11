@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.iescomercio.tema10.PruebaObjectOutputInputStream;
+package com.iescomercio.Amarres;
 
 import javax.swing.JTable;
 
@@ -21,7 +21,9 @@ public interface DAO {
     
     public boolean borrar(Barcos b);
     
-    public boolean modificar();
+    public boolean modificar1(Barcos b);
+    
+    public boolean modificar2(Barcos b);
     
     public JTable ver();
 }

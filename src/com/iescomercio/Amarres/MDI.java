@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.iescomercio.tema10.PruebaObjectOutputInputStream;
+package com.iescomercio.Amarres;
 
 import javax.swing.JFrame;
 

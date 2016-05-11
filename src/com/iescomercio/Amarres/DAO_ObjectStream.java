@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.iescomercio.tema10.PruebaObjectOutputInputStream;
+package com.iescomercio.Amarres;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -96,7 +96,18 @@ public class DAO_ObjectStream implements DAO{
     }
 
     @Override
-    public boolean modificar() {
+    public boolean modificar1(Barcos b) {
+        if(coleccion.contains(b)){
+            coleccion.remove(b);
+            return true;
+        }
+        else
+            return false;
+    }
+    
+    @Override
+    public boolean modificar2(Barcos b) {
+        coleccion.add(b);
         return true;
     }
 
@@ -111,5 +122,4 @@ public class DAO_ObjectStream implements DAO{
         JTable tabla = new JTable(modelo);
         return tabla;
     }
-    
 }
