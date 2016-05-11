@@ -19,7 +19,7 @@ public class MDI extends javax.swing.JFrame {
     public MDI() {
         initComponents();
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setTitle("Puerto Sagasta");
+        setTitle("Amarres Sagastagoitia");
     }
 
     /**
