@@ -60,7 +60,7 @@ public class Conexion {
                 linea = br.readLine();
             }
             Class.forName(driver);
-            url = "jdbc:" + bd + "://" + host + ":" + port + "/mysql?zeroDateTimeBehavior=convertToNull";
+            url = "jdbc:mysql://" + host + ":" + port + "/" + bd + "?zeroDateTimeBehavior=convertToNull";
             con = DriverManager.getConnection(url, user, pw);
             
         } catch (FileNotFoundException ex) {

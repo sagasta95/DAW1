@@ -71,8 +71,8 @@ public class View extends JInternalFrame implements ActionListener, InternalFram
         crearVistaModificar();
         crearVistaModificar2();
         crearVistaVer();
-        setClosable(true);
         
+        setClosable(true);   
         setSize(d);
         setResizable(false);
         setTitle("Barcos");
@@ -360,7 +360,4 @@ public class View extends JInternalFrame implements ActionListener, InternalFram
 
     }
     
-    public static void main(String[] args) {
-        new View();
-    }
 }

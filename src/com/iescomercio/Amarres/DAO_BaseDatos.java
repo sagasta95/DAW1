@@ -54,10 +54,10 @@ public class DAO_BaseDatos implements DAO{
     @Override
     public boolean añadir(Barcos b) {
         try {
-            if(stm.executeQuery("select * from barcos.barcos where matricula = " + b.getMatricula() + ";").first())
+            if(stm.executeQuery("select * from barcos where matricula = " + b.getMatricula() + ";").first())
                 return false;
             else {
-                stm.executeUpdate("insert barcos.barcos values(" + b.getMatricula() + "," + b.getAño_fabricacion() + "," + b.getM_eslora() + "," + b.getCv() + "," + b.getN_camarotes() + ");");
+                stm.executeUpdate("insert barcos values(" + b.getMatricula() + "," + b.getAño_fabricacion() + "," + b.getM_eslora() + "," + b.getCv() + "," + b.getN_camarotes() + ");");
                 return true;
             }
         } catch (SQLException ex) {
@@ -69,8 +69,8 @@ public class DAO_BaseDatos implements DAO{
     @Override
     public boolean borrar(Barcos b) {
         try {
-            if(stm.executeQuery("select * from barcos.barcos where matricula = " + b.getMatricula() + ";").first()){
-                stm.executeUpdate("delete from barcos.barcos where matricula = " + b.getMatricula() + ";");
+            if(stm.executeQuery("select * from barcos where matricula = " + b.getMatricula() + ";").first()){
+                stm.executeUpdate("delete from barcos where matricula = " + b.getMatricula() + ";");
                 return true;
             }
             else
@@ -83,32 +83,12 @@ public class DAO_BaseDatos implements DAO{
 
     @Override
     public boolean modificar1(Barcos b) {
-        try {
-            if(stm.executeQuery("select * from barcos.barcos where matricula = " + b.getMatricula() + ";").first()){
-                stm.executeUpdate("delete from barcos.barcos where matricula = " + b.getMatricula() + ";");
-                return true;
-            }
-            else
-                return false;
-        } catch (SQLException ex) {
-            Logger.getLogger(DAO_BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
+        return borrar(b);
     }
     
     @Override
     public boolean modificar2(Barcos b){
-        try {
-            if(stm.executeQuery("select * from barcos.barcos where matricula = " + b.getMatricula() + ";").first())
-                return false;
-            else {
-                stm.executeUpdate("insert barcos.barcos values(" + b.getMatricula() + "," + b.getAño_fabricacion() + "," + b.getM_eslora() + "," + b.getCv() + "," + b.getN_camarotes() + ");");
-                return true;
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(DAO_BaseDatos.class.getName()).log(Level.SEVERE, null, ex);
-            return false;
-        }
+        return añadir(b);
     }
 
     @Override
@@ -116,7 +96,7 @@ public class DAO_BaseDatos implements DAO{
         try {
             String[] titColumna = {"Matricula", "Fabricacion", "Eslora(m)", "CV", "Nº Camarotes"};
             DefaultTableModel modelo = new DefaultTableModel(titColumna, 0);
-            rs = stm.executeQuery("select * from barcos.barcos");
+            rs = stm.executeQuery("select * from barcos");
             while (rs.next()) {
                 String[] datColumna = {"" + rs.getInt(1), "" + rs.getInt(2), "" + rs.getInt(3), "" + rs.getInt(4), "" + rs.getInt(5)};
                 modelo.addRow(datColumna);
