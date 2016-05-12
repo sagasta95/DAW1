@@ -154,11 +154,11 @@ public class View extends JInternalFrame implements ActionListener, InternalFram
     
     private void crearVistaModificar2(){
         jpModificar2 = new JPanel(null);
-        jlbAñadirDni = new JLabel("DNI:");
-        jlbAñadirNombre = new JLabel("Nombre:");
-        jlbAñadirApellido1 = new JLabel("Primer Apellido:");
-        jlbAñadirApellido2 = new JLabel("Segundo Apellido:");
-        jlbAñadirEdad = new JLabel("Edad:");
+        jlbAñadirDni = new JLabel("Matricula:");
+        jlbAñadirNombre = new JLabel("Año de fabricacion::");
+        jlbAñadirApellido1 = new JLabel("Eslora (m):");
+        jlbAñadirApellido2 = new JLabel("CV:");
+        jlbAñadirEdad = new JLabel("Nº Camarotes:");
         jtfñadirDni = new JTextField();
         jtfAñadirNombre = new JTextField();
         jtfAñadirApellido1 = new JTextField();
